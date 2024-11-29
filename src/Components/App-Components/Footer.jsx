@@ -105,10 +105,10 @@ export default function Footer() {
       <section className="relative flex items-center justify-center max-lg:flex-col w-full box-border bg-page-blue-normal text-white gap-5 pt-5">
         <article className="flex w-full flex-col justify-center px-1 gap-x-5 items-center max-[900px]:flex-col max-[900px]:pb-10 max-sm:pl-[10px]">
           <img 
-            src="https://real-color.com.ar/banners-images/Assets/logo.png"
+            src="https://real-color.com.ar/banners-images/Assets/logo_blanco.svg"
             className="object-cover min-w-[300px] max-w-[300px] max-[900px]:object-cover max-[900px]:w-[350px]"
           />
-          <ul className="flex flex-col text-page-gray-light min-w-[300px] max-[1500px]:justify-center pt-8">
+          <ul className="flex flex-col text-page-gray-light min-w-[300px] max-[1500px]:justify-center">
             <span className='flex font-bold w-full pb-2 text-white'>
               ¡CONTACTANOS!
             </span>
