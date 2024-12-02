@@ -15,43 +15,43 @@ export default function Others () {
         <ul className="flex max-md:hidden flex-col gap-2">
           <li className="hover:bg-black hover:text-white text-center bg-page-gray-light font-semibold rounded-full w-[250px] px-5 py-1 duration-300">
             <NavLink 
-              to={'/others/about_us'}>
+              to={'/test/page/realcolorweb/others/about_us'}>
             Sobre nosotros
             </NavLink>
           </li>
           {/* <li className="hover:bg-black hover:text-white text-center bg-page-gray-light font-semibold rounded-full w-[250px] px-5 py-1 duration-300">
             <NavLink 
-              to={'/others/trabaja_con_nosotros'}>
+              to={'/test/page/realcolorweb/others/trabaja_con_nosotros'}>
               Trabaja con nosotros
             </NavLink>
           </li> */}
           <li className="hover:bg-black hover:text-white text-center bg-page-gray-light font-semibold rounded-full w-[250px] px-5 py-1 duration-300">
             <NavLink 
-              to={'/others/garantia'}>
+              to={'/test/page/realcolorweb/others/garantia'}>
               Garantia
             </NavLink>
           </li>
           <li className="hover:bg-black hover:text-white text-center bg-page-gray-light font-semibold rounded-full w-[250px] px-5 py-1 duration-300">
             <NavLink 
-              to={'/others/centro_de_ayuda'}>
+              to={'/test/page/realcolorweb/others/centro_de_ayuda'}>
               Centro de ayuda
             </NavLink>
           </li>
           {/* <li className="hover:bg-black hover:text-white text-center bg-page-gray-light font-semibold rounded-full w-[250px] px-5 py-1 duration-300">
             <NavLink 
-              to={'/others/sucursales'}>
+              to={'/test/page/realcolorweb/others/sucursales'}>
               Sucursales
             </NavLink>
           </li> */}
           {/* <li className="hover:bg-black hover:text-white text-center bg-page-gray-light font-semibold rounded-full w-[250px] px-5 py-1 duration-300">
             <NavLink 
-              to={'/others/politicas_de_devolucion'}>
+              to={'/test/page/realcolorweb/others/politicas_de_devolucion'}>
               Politicas de devolucion
             </NavLink>
           </li> */}
           <li className="hover:bg-black hover:text-white text-center bg-page-gray-light font-semibold rounded-full w-[250px] px-5 py-1 duration-300">
             <NavLink 
-              to={'/others/revendedores'}>
+              to={'/test/page/realcolorweb/others/revendedores'}>
               Revendedores
             </NavLink>
           </li>
@@ -74,37 +74,37 @@ export default function Others () {
         <ul className="max-md:flex hidden flex-wrap gap-2 w-full justify-center items-center">
           <li className="hover:bg-black hover:text-white text-center bg-page-gray-light font-semibold rounded-full w-[220px] px-5 py-1 duration-300">
             <NavLink 
-              to={'/others/about_us'}>
+              to={'/test/page/realcolorweb/others/about_us'}>
               Sobre nosotros
             </NavLink>
           </li>
           {/* <li className="hover:bg-black hover:text-white text-center bg-page-gray-light font-semibold rounded-full w-[220px] px-5 py-1 duration-300">
             <NavLink 
-              to={'/others/trabaja_con_nosotros'}>
+              to={'/test/page/realcolorweb/others/trabaja_con_nosotros'}>
               Trabaja con nosotros
             </NavLink>
           </li> */}
           <li className="hover:bg-black hover:text-white text-center bg-page-gray-light font-semibold rounded-full w-[220px] px-5 py-1 duration-300">
             <NavLink 
-              to={'/others/garantia'}>
+              to={'/test/page/realcolorweb/others/garantia'}>
               Garantia
             </NavLink>
           </li>
           <li className="hover:bg-black hover:text-white text-center bg-page-gray-light font-semibold rounded-full w-[220px] px-5 py-1 duration-300">
             <NavLink 
-              to={'/others/centro_de_ayuda'}>
+              to={'/test/page/realcolorweb/others/centro_de_ayuda'}>
               Centro de ayuda
             </NavLink>
           </li>
           {/* <li className="hover:bg-black hover:text-white text-center bg-page-gray-light font-semibold rounded-full w-[220px] px-5 py-1 duration-300">
             <NavLink 
-              to={'/others/politicas_de_devolucion'}>
+              to={'/test/page/realcolorweb/others/politicas_de_devolucion'}>
               Politicas de devolucion
             </NavLink>
           </li> */}
           <li className="hover:bg-black hover:text-white text-center bg-page-gray-light font-semibold rounded-full w-[220px] px-5 py-1 duration-300">
             <NavLink 
-              to={'/others/revendedores'}>
+              to={'/test/page/realcolorweb/others/revendedores'}>
               Revendedores
             </NavLink>
           </li>

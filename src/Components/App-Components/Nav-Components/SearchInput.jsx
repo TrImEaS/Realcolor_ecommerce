@@ -14,7 +14,7 @@ export default function SearchInput() {
   
   const handleSubmit = (e) => {
     e.preventDefault()
-    navigate(`/search/?search=${keyword}`)
+    navigate(`test/page/realcolorweb/search/?search=${keyword}`)
     setKeyword('')
   }
 
@@ -132,7 +132,7 @@ function SearchResults({ keyword }) {
               src={product.img_base} 
               loading="eager"
               alt={product.name}
-              onError={(e) => e.target.src = 'page-icon.jpeg'}
+              onError={(e) => e.target.src = 'page_icon.webp'}
               className="w-full h-full object-contain" />
           </header>
 

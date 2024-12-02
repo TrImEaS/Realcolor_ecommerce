@@ -11,7 +11,7 @@ export default function Nav() {
     {/*---Nav top---*/}
       <section className='flex gap-x-5 max-sm:gap-x-2 justify-between max-sm:justify-center items-center h-28 w-3/4 max-lg:w-full px-2'>
         {/*Logo*/}
-        <NavLink to='/' className='h-[100px] flex items-center max-xl:justify-center'>
+        <NavLink to='test/page/realcolorweb/' className='h-[100px] flex items-center max-xl:justify-center'>
           <img src="https://real-color.com.ar/banners-images/Assets/logo_azul.svg" alt="company-logo" className='w-[200px] max-w-[200px] '/>
         </NavLink>
 

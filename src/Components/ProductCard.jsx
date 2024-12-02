@@ -28,7 +28,7 @@ export default function ProductCard({ price, name, sku, img, discount }) {
 
   return(
     <NavLink
-      to={`/products/?product=${sku}`} 
+      to={`/test/page/realcolorweb/products/?product=${sku}`} 
       className="flex flex-col hover:scale-105 box-border items-center my-3 justify-between bg-white p-2 mx-auto max-[430px]:ml-4 max-[375px]:ml-1 duration-300 hover:cursor-pointer shadow-border border-2 rounded-md"
       style={{ minHeight: '400px', minWidth: '270px', height: '400px', width: '270px' }}>
       <header className="relative w-full flex-grow-[0.55] box-border">
@@ -39,7 +39,7 @@ export default function ProductCard({ price, name, sku, img, discount }) {
           ''
         }
         <img 
-          src={imageError ? 'https://technologyline.com.ar/banners-images/Assets/page-icon.jpeg' : img}
+          src={imageError ? 'https://real-color.com.ar/banners-images/Assets/page_icon.webp' : img}
           alt={name}
           loading="eager" 
           className="w-full h-full object-contain rounded-lg"

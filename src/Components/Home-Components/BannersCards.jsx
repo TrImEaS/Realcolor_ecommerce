@@ -9,7 +9,7 @@ export default function BannersCards() {
           src={'https://technologyline.com.ar/banners-images/Assets/BannerCards-images/banner-1.jpg'}
           className="object-fill w-full h-full rounded-xl shadow-lg group-hover:shadow-page-blue-darkMarine duration-500 group"
         />
-        <NavLink to={'/search/?sub_category=lavado'} className="absolute bottom-[4%] max-xl:bottom-[2%] left-[5%] group text-lg max-xl:text-sm max-md:text-xs max-sm:text-lg font-semibold rounded bg-page-blue-normal duration-500 opacity-20 group-hover:opacity-100 w-[45%] z-10 text-center">
+        <NavLink to={'/test/page/realcolorweb/search/?sub_category=lavado'} className="absolute bottom-[4%] max-xl:bottom-[2%] left-[5%] group text-lg max-xl:text-sm max-md:text-xs max-sm:text-lg font-semibold rounded bg-page-blue-normal duration-500 opacity-20 group-hover:opacity-100 w-[45%] z-10 text-center">
           VER MAS
         </NavLink>
       </article>
@@ -19,7 +19,7 @@ export default function BannersCards() {
           src={'https://technologyline.com.ar/banners-images/Assets/BannerCards-images/banner-2.jpg'}
           className="object-fill w-full h-full rounded-xl shadow-lg group-hover:shadow-page-blue-darkMarine duration-500 group"
         />
-        <NavLink to={'/search/?sub_category=heladeras'} className="absolute bottom-[4%] max-xl:bottom-[2%] left-[5%] group text-lg max-xl:text-sm max-md:text-xs max-sm:text-lg font-semibold rounded bg-page-blue-normal duration-500 opacity-20 group-hover:opacity-100 w-[45%] z-10 text-center">
+        <NavLink to={'/test/page/realcolorweb/search/?sub_category=heladeras'} className="absolute bottom-[4%] max-xl:bottom-[2%] left-[5%] group text-lg max-xl:text-sm max-md:text-xs max-sm:text-lg font-semibold rounded bg-page-blue-normal duration-500 opacity-20 group-hover:opacity-100 w-[45%] z-10 text-center">
           VER MAS
         </NavLink>
       </article>
@@ -29,7 +29,7 @@ export default function BannersCards() {
           src={'https://technologyline.com.ar/banners-images/Assets/BannerCards-images/banner-3.jpg'}
           className="object-fill w-full h-full rounded-xl shadow-lg group-hover:shadow-page-blue-darkMarine duration-500 group"
         />
-        <NavLink to={'/search/?sub_category=cuidado personal'} className="absolute bottom-[4%] max-xl:bottom-[2%] left-[5%] group text-lg max-xl:text-sm max-md:text-xs max-sm:text-lg font-semibold rounded bg-page-blue-normal duration-500 opacity-20 group-hover:opacity-100 w-[45%] z-10 text-center">
+        <NavLink to={'/test/page/realcolorweb/search/?sub_category=cuidado personal'} className="absolute bottom-[4%] max-xl:bottom-[2%] left-[5%] group text-lg max-xl:text-sm max-md:text-xs max-sm:text-lg font-semibold rounded bg-page-blue-normal duration-500 opacity-20 group-hover:opacity-100 w-[45%] z-10 text-center">
           VER MAS
         </NavLink>
       </article>

@@ -12,11 +12,11 @@ export default function App() {
       <ScrollToTopOnLocationChange />
       <Nav/>
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/products" element={<Products/>}/>
-        <Route path="/search" element={<Search />}/>
+        <Route path="/test/page/realcolorweb/" element={<Home/>}/>
+        <Route path="/test/page/realcolorweb/products" element={<Products/>}/>
+        <Route path="/test/page/realcolorweb/search" element={<Search />}/>
 
-        <Route path="/others" element={<Others/>}>
+        <Route path="/test/page/realcolorweb/others" element={<Others/>}>
           <Route path="about_us" element={<About_Us/>}/>
           <Route path="revendedores" element={<Revendedores/>}/>
           <Route path="garantia" element={<Garantia/>}/>
@@ -26,7 +26,7 @@ export default function App() {
           <Route path="centro_de_ayuda" element={<Centro_de_ayuda/>}/>
         </Route>
 
-        <Route path="/error" element={<Error/>}/>
+        <Route path="/test/page/realcolorweb/error" element={<Error/>}/>
       </Routes>
 
       <a 

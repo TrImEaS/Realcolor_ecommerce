@@ -51,7 +51,7 @@ export default function ImageSlider({ loadedImages }) {
           {loading 
           ? <Spinner />
           : <img
-              src={error ? 'https://technologyline.com.ar/banners-images/Assets/page-icon.jpeg' : loadedImages[0]}
+              src={error ? 'https://real-color.com.ar/banners-images/Assets/page_icon.webp' : loadedImages[0]}
               onError={handleImageError}
               loading="eager"
               alt="Image 1"

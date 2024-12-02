@@ -136,16 +136,16 @@ export default function Footer() {
             <h1 className="font-bold text-white">
               Categorías
             </h1>
-            <NavLink to={`/search/?category=electro y aires`} className="hover:text-white duration-300">
+            <NavLink to={`test/page/realcolorweb/search/?category=electro y aires`} className="hover:text-white duration-300">
               Electrodomésticos
             </NavLink>
-            <NavLink to={`/search/?category=informatica`} className="hover:text-white duration-300">
+            <NavLink to={`test/page/realcolorweb/search/?category=informatica`} className="hover:text-white duration-300">
               Informática
             </NavLink>
-            <NavLink to={`/search/?category=tecnologia`} className="hover:text-white duration-300">
+            <NavLink to={`test/page/realcolorweb/search/?category=tecnologia`} className="hover:text-white duration-300">
               Tecnología
             </NavLink>
-            <NavLink to={`/search/?category=mas categorias`} className="hover:text-white duration-300">
+            <NavLink to={`test/page/realcolorweb/search/?category=mas categorias`} className="hover:text-white duration-300">
               Mas Categorías
             </NavLink>
           </article>
@@ -155,13 +155,13 @@ export default function Footer() {
             <h1 className="font-bold text-white">
               Real Color SRL
             </h1>
-            <NavLink to={`/others/about_us`} className="hover:text-white duration-300">
+            <NavLink to={`/test/page/realcolorweb/others/about_us`} className="hover:text-white duration-300">
               Sobre nosotros
             </NavLink>
-            <NavLink to={`/others/mayoristas`} className="hover:text-white duration-300">
+            <NavLink to={`/test/page/realcolorweb/others/mayoristas`} className="hover:text-white duration-300">
               Venta a mayoristas
             </NavLink>
-            <span to={`/others/trabaja_con_nosotros`} className="text-[#ebebe446] duration-300 cursor-default">
+            <span to={`/test/page/realcolorweb/others/trabaja_con_nosotros`} className="text-[#ebebe446] duration-300 cursor-default">
               Trabaja con nosotros
             </span>
           </article>
@@ -171,16 +171,16 @@ export default function Footer() {
             <h1 className="font-bold text-white">
               Ayuda y información
             </h1>
-            <NavLink to={`/others/centro_de_ayuda`} className="hover:text-white duration-300">
+            <NavLink to={`/test/page/realcolorweb/others/centro_de_ayuda`} className="hover:text-white duration-300">
               Centro de ayuda
             </NavLink>
-            <NavLink to={`/others/garantia`} className="hover:text-white duration-300">
+            <NavLink to={`/test/page/realcolorweb/others/garantia`} className="hover:text-white duration-300">
               Garantia
             </NavLink>
-            <NavLink to={`/others/about_us`} className="hover:text-white duration-300">
+            <NavLink to={`/test/page/realcolorweb/others/about_us`} className="hover:text-white duration-300">
               Sobre nosotros
             </NavLink>
-            <NavLink to={`/others/revendedores`} className="hover:text-white duration-300">
+            <NavLink to={`/test/page/realcolorweb/others/revendedores`} className="hover:text-white duration-300">
               Revendedores
             </NavLink>
           </article>
