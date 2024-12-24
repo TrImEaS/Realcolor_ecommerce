@@ -66,7 +66,7 @@ export default function CategoriesMenu () {
             <section className='flex items-center flex-col gap-3 text-black h-[100% + 100px]'>
               <div className='h-full w-full flex justify-center border-b-[4px] border-[#2a5cb3]'>
                 <NavLink 
-                  to='test/page/realcolorweb/search' 
+                  to='search' 
                   onClick={handleClickCategories} 
                   className='hover:text-[#2a5cb3] max-sm:text-xl text-2xl duration-300 font-bold'>
                   Todos los productos
@@ -79,7 +79,7 @@ export default function CategoriesMenu () {
                 <ul className='flex flex-wrap justify-between py-4'>
                   <li className='hover:text-[#2a5cb3] duration-300 border-b-[3px] border-page-blue-normal'>
                     <NavLink 
-                      to={`test/page/realcolorweb/search/?category=${category.toLowerCase()}`} 
+                      to={`search/?category=${category.toLowerCase()}`} 
                       className={'font-semibold'}
                       onClick={handleClickCategories}>
                       {category.toUpperCase()}
@@ -96,7 +96,7 @@ export default function CategoriesMenu () {
                       key={sub_category} 
                       className='hover:text-[#2a5cb3] text-xs duration-300'>
                       <NavLink 
-                        to={`test/page/realcolorweb/search/?category=${category.toLowerCase()}&sub_category=${sub_category.toLowerCase()}`}
+                        to={`search/?category=${category.toLowerCase()}&sub_category=${sub_category.toLowerCase()}`}
                         onClick={handleClickCategories}>
                         {sub_category.replace(';', ',')}
                       </NavLink>
@@ -118,7 +118,7 @@ export default function CategoriesMenu () {
               key={category.toLowerCase()}
               className='hover:bg-white hover:text-black rounded-full p-1 px-2 duration-300'>
               <NavLink 
-                to={`test/page/realcolorweb/search/?category=${category.toLowerCase()}`}>
+                to={`search/?category=${category.toLowerCase()}`}>
                 {category}
               </NavLink>
             </li>

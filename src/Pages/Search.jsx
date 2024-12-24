@@ -129,7 +129,7 @@ export default function Search () {
           <div>
             <NavLink
               className={'group font-semibold hover:text-[#2a5cb3] duration-300'} 
-              to={'test/page/realcolorweb/search'}>
+              to={'/search'}>
               TODOS
               <span className='group-hover:text-black'>/</span>
             </NavLink>
@@ -137,7 +137,7 @@ export default function Search () {
             {filters.search ?
               <NavLink
                 className={'group font-semibold hover:text-[#2a5cb3] duration-300'} 
-                to={`test/page/realcolorweb/search/${filters.search}`}>
+                to={`/search/${filters.search}`}>
                 {filters.search.toLocaleUpperCase()}
                 <span className='group-hover:text-black'>/</span>
               </NavLink>
@@ -146,7 +146,7 @@ export default function Search () {
             {filters.search_category ?
               <NavLink
                 className={'group font-semibold hover:text-[#2a5cb3] duration-300'} 
-                to={`test/page/realcolorweb/search/?category=${filters.search_category}`}>
+                to={`/search/?category=${filters.search_category}`}>
                 {filters.search_category.toLocaleUpperCase()}
                 <span className='group-hover:text-black'>/</span>
               </NavLink>
@@ -206,7 +206,7 @@ export default function Search () {
 
             <div className={`flex-col gap-y-5 rounded w-[210px] h-[330px] overflow-x-hidden absolute top-[40px] left-[-80px] bg-white border-2 p-3 ${filterMenu ? 'flex' : 'hidden'}`}>
               <CategoriesFilters onFilterChange={setFilters} products={filteredProducts}/>
-              <NavLink to='test/page/realcolorweb/search' className='h-10 flex items-center justify-center bg-white rounded-lg duration-500 active:text-sm active:duration-0 font-bold border border-black'>Limpiar Filtros</NavLink>
+              <NavLink to='search' className='h-10 flex items-center justify-center bg-white rounded-lg duration-500 active:text-sm active:duration-0 font-bold border border-black'>Limpiar Filtros</NavLink>
             </div>
           </div>
 
@@ -218,7 +218,7 @@ export default function Search () {
       <aside className="max-[1366px]:hidden flex flex-col gap-y-8 min-w-[15%] w-[15%] pt-2">
         <div className='max-[1366px]:hidden flex flex-col gap-y-8'>
           <CategoriesFilters onFilterChange={setFilters} products={filteredProducts}/>
-          <NavLink to='test/page/realcolorweb/search' className='h-10 flex items-center justify-center bg-white rounded-lg duration-500 active:text-sm active:duration-0 font-bold border border-black'>Limpiar Filtros</NavLink>
+          <NavLink to='search' className='h-10 flex items-center justify-center bg-white rounded-lg duration-500 active:text-sm active:duration-0 font-bold border border-black'>Limpiar Filtros</NavLink>
         </div>
       </aside>
       

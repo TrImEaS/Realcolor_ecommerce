@@ -14,7 +14,7 @@ export default function SearchInput() {
   
   const handleSubmit = (e) => {
     e.preventDefault()
-    navigate(`test/page/realcolorweb/search/?search=${keyword}`)
+    navigate(`search/?search=${keyword}`)
     setKeyword('')
   }
 
