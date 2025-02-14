@@ -5,7 +5,7 @@ export default function Error() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    document.title = `No se ha encontrado la ruta | Real Color SRL`
+    document.title = `No se ha encontrado la ruta | Technology Line`
     
     document.documentElement.style.overflow = 'hidden'
     document.body.style.overflow = 'hidden'

@@ -2,6 +2,8 @@ import { FaSearch } from 'react-icons/fa'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 import Spinner from '../../Products/Spinner'
+const API_URL = import.meta.env.MODE === 'production' ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV;
+
 
 export default function SearchInput() {
   const [keyword, setKeyword] = useState('')
@@ -14,7 +16,7 @@ export default function SearchInput() {
   
   const handleSubmit = (e) => {
     e.preventDefault()
-    navigate(`search/?search=${keyword}`)
+    navigate(`/search/?search=${keyword}`)
     setKeyword('')
   }
 
@@ -39,22 +41,25 @@ export default function SearchInput() {
 
   return(
     <form 
-      className='flex relative rounded-full bg-gray-200 max-sm:bg-transparent flex-col w-full max-sm:w-fit text-black gap-2 justify-between  duration-500 items-center px-2 z-[9999]'
+      className='flex relative rounded-full bg-gray-100 max-sm:bg-transparent group flex-col w-full text-black gap-2 justify-between duration-500 items-center px-2 z-[9999]'
       onSubmit={handleSubmit}
       ref={inputRef}
     >
-      <div className='flex sm:w-full sm:px-2 gap-2 items-center group rounded-full duration-500'>
-        <FaSearch className='text-gray-700 max-sm:text-white duration-500 max-sm:h-7 max-sm:w-9 max-sm:mb-[2px] group-hover:bg-gray-200 group-hover:text-black group-hover:p-1 rounded-lg group'/>
-
+      <label htmlFor='inputSearch' className='flex w-full sm:px-2 items-center min-w-8 rounded-full duration-500 justify-end'>
+        <span className='max-sm:text-white duration-500 max-sm:h-8 max-sm:rounded-r-none w-10 max-sm:mb-[1px] group-hover:bg-gray-200 group-hover:text-black text-lg group-hover:p-1 rounded-full flex items-center justify-center'>
+          <FaSearch/>
+        </span>
+        
         <input 
           type="text" 
-          className='w-full max-sm:w-0 max-sm:mr-[-45px] max-sm:group-hover:mr-0 max-sm:bg-transparent max-sm:group-hover:w-full max-sm:group-hover:bg-gray-200 duration-500 placeholder:text-gray-500 rounded-full bg-gray-200 outline-none px-3 py-1'
+          id='inputSearch'
+          className='w-full max-sm:w-0 max-sm:group-hover:w-full max-sm:mr-[-45px] max-sm:group-hover:mr-0 max-sm:bg-transparent max-sm:group-hover:bg-gray-100 duration-500 max-sm:rounded-l-none placeholder:text-gray-500 rounded-full bg-gray-100 outline-none px-3 py-1'
           placeholder='Buscar'
           value={keyword}
           onChange={handleChange}
           onFocus={handleFocusMenu}
         />
-      </div>
+      </label>
       {searchMenu !== false && keyword !== '' && <SearchResults keyword={keyword} />}
     </form>
   )
@@ -67,7 +72,7 @@ function SearchResults({ keyword }) {
   useEffect(() => {
     (async function () {
       try {
-        const response = await fetch('https://technologyline.com.ar/api/products');
+        const response = await fetch(`${API_URL}/api/products`);
         if (!response.ok) {
           throw new Error('Error al obtener productos');
         }
@@ -126,13 +131,11 @@ function SearchResults({ keyword }) {
           key={product.id} 
           className="flex box-border items-center justify-between bg-white p-1 duration-500 border-2 rounded-sm hover:cursor-pointer z-[99999] w-full min-h-[180px] max-h-[150px] shadow-border">
           <header className="relative w-[50%] h-full box-border">
-            { product.discount > 0 ? <img className="absolute h-10 w-10 right-5" src={'https://technologyline.com.ar/banners-images/Assets/sale-icon.svg'} alt="" /> : '' }
-            
             <img 
               src={product.img_base} 
               loading="eager"
               alt={product.name}
-              onError={(e) => e.target.src = 'page_icon.webp'}
+              onError={(e) => e.target.src = 'page-icon.jpeg'}
               className="w-full h-full object-contain" />
           </header>
 
@@ -142,18 +145,7 @@ function SearchResults({ keyword }) {
               <span>{product.name.length > maxNameLength ? `${product.name.substring(0, maxNameLength)}...`: product.name}</span>
             </p>
 
-            {product.discount 
-            ? 
-              <div>
-                <div className='flex items-center gap-x-1'>
-                  <p className="text-sm line-through">${formattedPrice(product.price)}</p>
-                  <span className='text-sm mb-1 bg-orange-400 text-white px-2 rounded-full'>{totalDiscount(product.price, product.discount)}% OFF</span>
-                </div>
-                <p className="font-bold text-2xl">${formattedPrice(product.discount)}</p>
-              </div>
-            : 
-              <p className="font-bold text-2xl max-[1025px]:text-sm">${formattedPrice(product.price)}</p>
-            }
+            <p className="font-bold text-2xl max-[1025px]:text-sm">${formattedPrice(product.price_list_1)}</p>
           </article>
         </NavLink>
       ))

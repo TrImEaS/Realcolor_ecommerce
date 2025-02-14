@@ -19,11 +19,11 @@ export default function CategoriesFilters ({ products, onFilterChange }) {
   return (
     <>
       {/*Categories*/}
-      <div className="flex flex-col gap-y-2 border-t-[3px] border-[#2a5cb3]">
+      <div className="flex flex-col gap-y-2 border-t-[3px] border-page-lightblue">
         <header className="flex justify-between items-center py-1">
           <p onClick={handleToggleCategory} className="font-medium text-xl cursor-pointer flex justify-between pr-1 w-full items-center">
             Categorías
-            <span className="text-[#2a5cb3] text-lg">{isCategoryOpen ? <FaAngleUp/> : <FaAngleDown/>}</span>
+            <span className="text-page-lightblue text-lg">{isCategoryOpen ? <FaAngleUp/> : <FaAngleDown/>}</span>
           </p>
         </header>
 
@@ -31,14 +31,14 @@ export default function CategoriesFilters ({ products, onFilterChange }) {
           {categories.slice(0, visibleCategories).map((category) => (
             <div key={category} className="flex cursor-pointer group">
               <NavLink className={'flex hover:text-page-blue-normal duration-300 items-center'} to={`${window.location.pathname}${window.location.search ? `${window.location.search}&` : '/?'}sub_category=${category.toLowerCase()}`}>
-                <span className="text-[#2a5cb3] text-2xl"><GoTriangleRight/></span>
+                <span className="text-page-lightblue text-2xl"><GoTriangleRight/></span>
                 <span className="group-hover">{category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()}</span>
               </NavLink>
             </div>
           ))}
 
           {categories.length > 5 && (
-            <span className="cursor-pointer text-[#2a5cb3] hover:text-page-blue-normal" onClick={handleToggleCategories}>
+            <span className="cursor-pointer text-page-lightblue hover:text-page-blue-normal" onClick={handleToggleCategories}>
               {visibleCategories === categories.length ? 'Ver menos' : 'Ver más...'}
             </span>
           )}
@@ -46,11 +46,11 @@ export default function CategoriesFilters ({ products, onFilterChange }) {
       </div>
 
       {/*Brands*/}
-      <div className="flex flex-col gap-y-2 border-t-[3px] border-[#2a5cb3]">
+      <div className="flex flex-col gap-y-2 border-t-[3px] border-page-lightblue">
         <header className="flex justify-between items-center py-1">
           <p onClick={handleToggleBrand} className="font-medium text-xl cursor-pointer flex justify-between pr-1 w-full items-center">
             Marcas
-            <span className="text-[#2a5cb3] text-lg">{isBrandOpen ? <FaAngleUp/> : <FaAngleDown/>}</span>
+            <span className="text-page-lightblue text-lg">{isBrandOpen ? <FaAngleUp/> : <FaAngleDown/>}</span>
           </p>
         </header>
  
@@ -58,14 +58,14 @@ export default function CategoriesFilters ({ products, onFilterChange }) {
           {brands.slice(0, visibleBrands).map((brand) => (
             <div key={brand} className="flex cursor-pointer group">
               <NavLink className={'flex hover:text-page-blue-normal duration-300 items-center'} to={`${window.location.pathname}${window.location.search ? `${window.location.search}&` : '/?'}brand=${brand.toLowerCase()}`}>
-                <span className="text-[#2a5cb3] text-2xl"><GoTriangleRight/></span>
+                <span className="text-page-lightblue text-2xl"><GoTriangleRight/></span>
                 <span className="group-hover">{brand.charAt(0).toUpperCase() + brand.slice(1).toLowerCase()}</span>
               </NavLink>
             </div>
           ))}
 
           {brands.length > 5 && (
-            <span className="cursor-pointer text-[#2a5cb3] hover:text-page-blue-normal" onClick={handleToggleBrands}>
+            <span className="cursor-pointer text-page-lightblue hover:text-page-blue-normal" onClick={handleToggleBrands}>
               {visibleBrands === brands.length ? 'Ver menos' : 'Ver más...'}
             </span>
           )}
@@ -92,13 +92,13 @@ export default function CategoriesFilters ({ products, onFilterChange }) {
   //   }))
   // }
         /*Prices hidden(hasta que se arregle)*/
-      /* <div className="flex flex-col gap-y-2 border-t-[3px] border-[#2a5cb3] w-full">
+      /* <div className="flex flex-col gap-y-2 border-t-[3px] border-page-lightblue w-full">
         <header className="flex flex-col justify-between items-center py-1 w-full">
           <p 
             onClick={handleTogglePrice} 
             className="font-bold cursor-pointer flex justify-between pr-1 w-full items-center">
             Precios
-            <span className="text-[#2a5cb3] text-lg">{isPriceOpen ? <FaAngleUp/> : <FaAngleDown/>}</span>
+            <span className="text-page-lightblue text-lg">{isPriceOpen ? <FaAngleUp/> : <FaAngleDown/>}</span>
           </p>
         </header>
 

@@ -1,10 +1,12 @@
-import ProductsSearch from '../Components/Search-Components/ProductsSearch.jsx'
-import CategoriesFilters from '../Components/Search-Components/CategoriesFilters.jsx'
 import { useState, useEffect } from 'react'
 import { useLocation, Outlet, NavLink } from 'react-router-dom'
+import { useProducts } from '../Context/ProductsContext'
+import ProductsSearch from '../Components/Search-Components/ProductsSearch.jsx'
+import CategoriesFilters from '../Components/Search-Components/CategoriesFilters.jsx'
 import Spinner from '../Components/Products/Spinner.jsx'
 
 export default function Search () {
+  const { products, loading } = useProducts()
   const location = useLocation()
   const [filters, setFilters] = useState({
     category: 'all',
@@ -18,26 +20,10 @@ export default function Search () {
     search: '',
   })
   const [filterMenu, setFilterMenu] = useState(false)
-  const [sortOption, setSortOption] = useState('default')
-  const [products, setProducts] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [sortOption, setSortOption] = useState('')
 
   useEffect(() => {
-    (async function () {
-      try {
-        const response = await fetch('https://technologyline.com.ar/api/products');
-        if (!response.ok) {
-          throw new Error('Error al obtener productos');
-        }
-        const data = await response.json();
-        setProducts(data);
-        setLoading(false);
-        document.title = `Buscar | Real Color SRL`
-      } 
-      catch (err) {
-        console.log(err)
-      }
-    })()
+    document.title = `Buscar | Technology Line`
   }, [])
 
   useEffect(() => {
@@ -61,63 +47,36 @@ export default function Search () {
   }
 
   const filterProducts = (products) => {
-    const sortedProducts = products.sort((a, b) => {
-      switch (sortOption) {
-        case 'min':
-          return parseFloat(a.price) - parseFloat(b.price)
-        case 'max':
-          return parseFloat(b.price) - parseFloat(a.price)
-        case 'A-Z':
-          return a.name.localeCompare(b.name)
-        case 'Z-A':
-          return b.name.localeCompare(a.name)
-        default:
-          return parseFloat(b.price) - parseFloat(a.price)
-      }
-    })
-    
+    const sortedProducts = [...products].sort((a, b) => {
+      if (sortOption === 'min') return parseFloat(a.price_list_1) - parseFloat(b.price_list_1);
+      if (sortOption === 'max') return parseFloat(b.price_list_1) - parseFloat(a.price_list_1);
+      if (sortOption === 'A-Z') return a.name.localeCompare(b.name);
+      if (sortOption === 'Z-A') return b.name.localeCompare(a.name);
+      if (sortOption === '') return parseFloat(b.price_list_1) - parseFloat(a.price_list_1); 
+    });
     return sortedProducts.filter(product => {
       return (
-        parseFloat(product.price) >= filters.minPrice 
-        &&
-        parseFloat(product.price) <= filters.maxPrice 
-        &&
-        (
+       parseFloat(product.price_list_1) >= filters.minPrice 
+        && parseFloat(product.price_list_1) <= filters.maxPrice 
+        && (
           filters.category === 'all' ||
           product.category === filters.category
         ) 
-        &&
-        product.name.toUpperCase().includes(filters.search_name.toUpperCase()) 
-        &&
-        product.category.toUpperCase().includes(filters.search_category.toUpperCase()) 
-        &&
-        product.sub_category.toUpperCase().includes(filters.search_subCat.toUpperCase()) 
-        &&
-        (filters.search_white_line == 1 ? product.white_line == 1 : true)
-        &&
-        (filters.search_brand.length === 0 || filters.search_brand.includes(product.brand.toLowerCase())) 
-        &&
-        (
+        && product.name.toUpperCase().includes(filters.search_name.toUpperCase()) 
+        && product.category.toUpperCase().includes(filters.search_category.toUpperCase()) 
+        && product.sub_category.toUpperCase().includes(filters.search_subCat.toUpperCase()) 
+        && (filters.search_white_line == 1 ? product.white_line == 1 : true) 
+        && (filters.search_brand.length === 0 || filters.search_brand.includes(product.brand.toLowerCase())) 
+        && (
           product.name.toLowerCase().includes(filters.search.toLowerCase()) ||
           product.sub_category.toLowerCase().includes(filters.search.toLowerCase())
         )
-      )
-    })
-  }
+      );
+    });
+  };
   
-  const handleResetFilters = () => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      search_category: '',
-      search_subCat: '',
-      search_brand: '',
-      category: 'all',
-      minPrice: 0.00,
-      maxPrice: 99999999999.00,
-    }))
-  }
-
-  const filteredProducts = filterProducts(products) 
+  
+  const filteredProducts = products && filterProducts(products) 
 
   const handleFilterMenu = () => setFilterMenu(!filterMenu)
 
@@ -128,7 +87,7 @@ export default function Search () {
         <article className="flex items-center w-full max-sm:w-4/5">
           <div>
             <NavLink
-              className={'group font-semibold hover:text-[#2a5cb3] duration-300'} 
+              className={'group font-semibold hover:text-page-lightblue duration-300'} 
               to={'/search'}>
               TODOS
               <span className='group-hover:text-black'>/</span>
@@ -136,7 +95,7 @@ export default function Search () {
 
             {filters.search ?
               <NavLink
-                className={'group font-semibold hover:text-[#2a5cb3] duration-300'} 
+                className={'group font-semibold hover:text-page-lightblue duration-300'} 
                 to={`/search/${filters.search}`}>
                 {filters.search.toLocaleUpperCase()}
                 <span className='group-hover:text-black'>/</span>
@@ -145,7 +104,7 @@ export default function Search () {
 
             {filters.search_category ?
               <NavLink
-                className={'group font-semibold hover:text-[#2a5cb3] duration-300'} 
+                className={'group font-semibold hover:text-page-lightblue duration-300'} 
                 to={`/search/?category=${filters.search_category}`}>
                 {filters.search_category.toLocaleUpperCase()}
                 <span className='group-hover:text-black'>/</span>
@@ -154,7 +113,7 @@ export default function Search () {
 
             {filters.search_subCat ? 
               <NavLink
-                className={'group font-semibold hover:text-[#2a5cb3] duration-300'}
+                className={'group font-semibold hover:text-page-lightblue duration-300'}
                 to={filters.search_category ?  `?&sub_category=${filters.search_subCat.toLowerCase()}` : `?sub_category=${filters.search_subCat.toLowerCase()}`}>
                 {filters.search_subCat.toLocaleUpperCase()}
                 <span className='group-hover:text-black'>/</span>
@@ -163,7 +122,7 @@ export default function Search () {
             
             {filters.search_brand ? 
               <NavLink
-                className={'font-semibold hover:text-[#2a5cb3] duration-300'}
+                className={'font-semibold hover:text-page-lightblue duration-300'}
                 to={`${window.location.pathname}${window.location.search ? `${window.location.search}&` : '/?'}brand=${filters.search_brand.toLowerCase()}`}>
                 {filters.search_brand.toLocaleUpperCase()}
               </NavLink> 
@@ -178,7 +137,7 @@ export default function Search () {
             onChange={(e) => setSortOption(e.target.value)}
             value={sortOption}
           >
-            <option className='max-[1366px]:text-sm' value="default">
+            <option className='max-[1366px]:text-sm' value="">
               Orden por defecto
             </option>
             <option className='max-[1366px]:text-sm' value="min">
@@ -206,7 +165,7 @@ export default function Search () {
 
             <div className={`flex-col gap-y-5 rounded w-[210px] h-[330px] overflow-x-hidden absolute top-[40px] left-[-80px] bg-white border-2 p-3 ${filterMenu ? 'flex' : 'hidden'}`}>
               <CategoriesFilters onFilterChange={setFilters} products={filteredProducts}/>
-              <NavLink to='search' className='h-10 flex items-center justify-center bg-white rounded-lg duration-500 active:text-sm active:duration-0 font-bold border border-black'>Limpiar Filtros</NavLink>
+              <NavLink to='/search' className='h-10 flex items-center justify-center bg-white rounded-lg duration-500 active:text-sm active:duration-0 font-bold border border-black'>Limpiar Filtros</NavLink>
             </div>
           </div>
 
@@ -218,7 +177,7 @@ export default function Search () {
       <aside className="max-[1366px]:hidden flex flex-col gap-y-8 min-w-[15%] w-[15%] pt-2">
         <div className='max-[1366px]:hidden flex flex-col gap-y-8'>
           <CategoriesFilters onFilterChange={setFilters} products={filteredProducts}/>
-          <NavLink to='search' className='h-10 flex items-center justify-center bg-white rounded-lg duration-500 active:text-sm active:duration-0 font-bold border border-black'>Limpiar Filtros</NavLink>
+          <NavLink to='/search' className='h-10 flex items-center justify-center bg-white rounded-lg duration-500 active:text-sm active:duration-0 font-bold border border-black'>Limpiar Filtros</NavLink>
         </div>
       </aside>
       

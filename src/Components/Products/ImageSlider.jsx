@@ -47,11 +47,11 @@ export default function ImageSlider({ loadedImages }) {
     <div className="min-h-[300px]">
       {loadedImages.length === 1 
       ? (
-        <div className="h-full flex items-center justify-center" onClick={() => handleZoomImage(loadedImages[0])}>
+        <div className="h-full flex items-center justify-center w-full max-w-[688px]" onClick={() => handleZoomImage(loadedImages[0])}>
           {loading 
           ? <Spinner />
           : <img
-              src={error ? 'https://real-color.com.ar/banners-images/Assets/page_icon.webp' : loadedImages[0]}
+              src={error ? 'https://technologyline.com.ar/banners-images/Assets/page-icon.jpeg' : loadedImages[0]}
               onError={handleImageError}
               loading="eager"
               alt="Image 1"
@@ -61,7 +61,7 @@ export default function ImageSlider({ loadedImages }) {
         </div>
       ) 
       : (
-        <div className="slider-container">
+        <div className="slider-container min-h-[300px] w-full max-w-[688px]">
           <Slider
             asNavFor={showSecondSlider ? nav2 : null}
             ref={(slider) => (sliderRef1 = slider)}
@@ -80,7 +80,7 @@ export default function ImageSlider({ loadedImages }) {
                   src={image}
                   loading="eager"
                   alt={`Image ${index + 1}`}
-                  className="object-cover border-2 rounded-lg max-w-[450px] w-full cursor-zoom-in"
+                  className="object-cover rounded-lg w-full cursor-zoom-in"
                 />
               </div>
             ))}
