@@ -174,11 +174,11 @@ export default function Cart() {
                   <span className="text-center tracking-wide px-5 text-gray-800 text-sm">{p.name.replace(/EAN.*/, '')}</span>
                 </NavLink>
                 
-                <section className="w-full flex justify-center text-white items-center">
-                  <button onClick={()=> deleteOneProductOfCart({ productID: p.id })} className="w-8 h-8 bg-page-blue-normal rounded-md flex justify-center items-center border hover:bg-sky-700 duration-300">-</button>
-                  <span className="min-w-8 min-h-8 bg-page-blue-normal rounded-md flex justify-center items-center border px-1">{p.quantity_selected}</span>
-                  <button onClick={()=> addProductToCart({ product: p })} className="w-8 h-8 bg-page-blue-normal rounded-md flex justify-center items-center border hover:bg-sky-600 duration-300">+</button>
-                </section>
+                <div className="w-full flex justify-center text-white items-center">
+                  <button onClick={()=> deleteOneProductOfCart({ productID: p.id })} className="w-7 h-7 bg-page-blue-normal rounded-md flex justify-center items-center border hover:bg-opacity-70 duration-300">-</button>
+                  <span className="min-w-7 min-h-7 bg-page-blue-normal rounded-md flex justify-center items-center border px-1">{p.quantity_selected}</span>
+                  <button onClick={()=> addProductToCart({ p })} className="w-7 h-7 bg-page-blue-normal rounded-md flex justify-center items-center border hover:bg-opacity-70 duration-300">+</button>
+                </div>
 
                 <button 
                   className="absolute top-2 right-2 hover:text-red-500 duration-300"

@@ -7,9 +7,9 @@ export default function MiniCart({ showCart, setShowCart }) {
   const { cartProducts, getTotalOfProducts, deleteOneProductOfCart, addProductToCart, cleanCart } = useCart()
 
   return (
-    <div className={`fixed top-0 right-0 w-[80%] max-sm:w-full min-h-[100%] cart flex flex-col max-w-[500px] overflow-y-auto gap-5 p-3 bg-gray-100 border-2 text-gray-800 cart ${showCart === 3 && 'hidden'} ${showCart ? 'show' : 'hide'}`}>
+    <div className={`fixed top-0 z-[999999] right-0 w-[80%] max-sm:w-full min-h-[100%] cart flex flex-col max-w-[500px] overflow-y-auto gap-5 p-3 bg-gray-100 border-2 text-gray-800 ${showCart === 3 && 'hidden'} ${showCart ? 'show' : 'hide'}`}>
       <button onClick={()=> setShowCart(0)}>
-        <FaTimesCircle className="text-xl text-page-blue-normal"/>
+        <FaTimesCircle className="text-xl text-sky-700"/>
       </button>
 
       <section className="w-full">
@@ -22,21 +22,21 @@ export default function MiniCart({ showCart, setShowCart }) {
           )
           : (
             <article className="flex flex-col gap-3 w-full justify-center border-b-2 pb-4 border-gray-200 items-center">
-              <h3 className="font-bold border-b-2 border-page-blue-normal px-3 tracking-wider text-page-blue-normal">
+              <h3 className="font-bold border-b-2 border-sky-700 px-3 tracking-wider text-sky-700">
                 Mi carrito
               </h3>
 
               <div className="flex justify-around items-center w-full px-5">
                 <NavLink to='/cart' onClick={()=> setShowCart(0)} className='group flex flex-col'>
-                  <p className="flex items-center gap-x-1 text-page-blue-normal">
+                  <p className="flex items-center gap-x-1 text-sky-700">
                     <FaDotCircle className="text-sm"/> 
                     <span>Ir a mi carrito</span>
                   </p>
-                  <span className="group-hover:w-full h-[1.5px] w-0 bg-page-blue-normal duration-300 text-page-blue-normal"></span>
+                  <span className="group-hover:w-full h-[1.5px] w-0 bg-page-blue-normal duration-300 text-sky-700"></span>
                 </NavLink>
 
                 <button onClick={() => cleanCart()} className="group flex flex-col">
-                  <p className="flex items-center gap-x-1 text-page-blue-normal">
+                  <p className="flex items-center gap-x-1 text-sky-700">
                     <FaDotCircle className="text-sm"/> 
                     <span>Vaciar carrito</span>
                   </p>
@@ -64,9 +64,9 @@ export default function MiniCart({ showCart, setShowCart }) {
                 </NavLink> 
 
                 <div className="w-full flex justify-center text-white items-center">
-                  <button onClick={()=> deleteOneProductOfCart({ productID: product.id })} className="w-7 h-6 bg-page-blue-normal rounded-md flex justify-center items-center border hover:bg-sky-700 duration-300">-</button>
+                  <button onClick={()=> deleteOneProductOfCart({ productID: product.id })} className="w-7 h-6 bg-page-blue-normal rounded-md flex justify-center items-center border hover:bg-opacity-70 duration-300">-</button>
                   <span className="min-w-7 min-h-6 bg-page-blue-normal rounded-md flex justify-center items-center border px-1">{product.quantity_selected}</span>
-                  <button onClick={()=> addProductToCart({ product })} className="w-7 h-6 bg-page-blue-normal rounded-md flex justify-center items-center border hover:bg-sky-600 duration-300">+</button>
+                  <button onClick={()=> addProductToCart({ product })} className="w-7 h-6 bg-page-blue-normal rounded-md flex justify-center items-center border hover:bg-opacity-70 duration-300">+</button>
                 </div>
               </aside>
             </article>

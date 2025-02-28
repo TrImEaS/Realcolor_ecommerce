@@ -21,7 +21,6 @@ export default function Products () {
   const navigate = useNavigate()
 
   useEffect(() => {
-          document.title = `${newProduct.name} | Real Color SRL`
     axios.get(`${API_URL}/api/products?sku=${productQuery}`)
     .then(response => {
       if (!response.status === 200)
@@ -30,6 +29,7 @@ export default function Products () {
       const newProduct = response.data[0]
       console.log(newProduct)
       setProduct(newProduct)
+      document.title = `${newProduct.name} | Technology Line`
 
       axios.post(`${API_URL}/api/products/addView/${newProduct.id}`)
       .then(res => {
@@ -149,7 +149,7 @@ export default function Products () {
                   <span>PROMO: EFECTIVO / TRANSFERENCIA BANCARIA: </span>
                   <p className='pl-5 font-semibold flex gap-1 text-[#15803d] items-center tracking-normal'>
                     <span>{`$${formattedPrice(product.price_list_2)}`}</span>
-                    <span className='text-xs text-[#dc7b26]'>(Ahorras: ${((product.price_list_2 - product.price_list_3)*-1).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})})</span>
+                    <span className='text-xs text-[#dc7b26]'>(Ahorras: ${((product.price_list_2 - product.price_list_1)*-1).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})})</span>
                   </p>
                 </div>
               </section>
@@ -219,17 +219,17 @@ export default function Products () {
         </section>
       </header>
 
-      <div className='flex flex-col max-sm:w-[90%] w-[83%] bg-blue-400 rounded-lg border shadow-lg'>
+      <div className='flex flex-col max-sm:w-[90%] w-[83%] bg-page-blue-normal rounded-lg border shadow-lg'>
         <div className='flex p-2 gap-x-3'>
           <span 
             onClick={() => setDescriptionMenu('desc')}          
-            className={`${descriptionMenu === 'desc' ? 'text-white' : ''} font-bold hover:text-white rounded-xl px-2 py-1 duration-300 cursor-pointer`}>
+            className={`${descriptionMenu === 'desc' ? 'bg-white text-slate-900' : 'text-white'} font-bold hover:bg-white hover:text-slate-900 rounded-3xl border-transparent px-2 py-1 duration-300 cursor-pointer`}>
             Descripción
           </span>
-          <span className='py-1'>|</span>
+          <span className='py-1 text-gray-200'>|</span>
           <span 
             onClick={() => setDescriptionMenu('spec')}
-            className={`${descriptionMenu === 'spec' ? 'text-white' : ''} font-bold hover:text-white rounded-xl px-2 py-1 duration-300 cursor-pointer`}>
+            className={`${descriptionMenu === 'spec' ? 'bg-white text-slate-900' : 'text-white'} font-bold hover:bg-white hover:text-slate-900 rounded-3xl border-transparent px-2 py-1 duration-300 cursor-pointer`}>
             Especificaciones
           </span>
         </div>
@@ -250,7 +250,7 @@ export default function Products () {
         </div>
       </div>
 
-      <section className='flex flex-col gap-y-10 w-[82%] max-sm:w-[70%]'>
+      <section className='flex flex-col gap-y-10 w-[90%] max-sm:w-[70%]'>
         {/* Seccion de descripcion */}
         { recomendProducts.length > 0 &&
           <div className='w-full flex flex-col gap-y-10'>

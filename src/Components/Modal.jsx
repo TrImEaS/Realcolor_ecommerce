@@ -16,7 +16,7 @@ export default function Modal({ progress, product, toAdd = 1 }) {
   return (
     <div className={`fixed top-2 right-0 flex rounded-sm modal bg-white w-full max-w-[300px] h-[120px] border-2 transition-transform duration-300 ease-in-out transform ${visible ? "show" : "hide"}`}>
       <main className="flex flex-col w-full h-full items-center gap-2 justify-between relative">
-        <header className={`${toAdd ? 'text-page-lightblue' : 'text-red-500'} font-bold w-full text-center text-xs leading-tight px-2`}>
+        <header className={`${toAdd ? 'text-page-blue-normal' : 'text-red-500'} font-bold w-full text-center text-xs leading-tight px-2`}>
           {toAdd ? "Producto agregado con éxito al carrito!" : "Producto eliminado del carrito con éxito!"}
         </header>
 
@@ -31,10 +31,10 @@ export default function Modal({ progress, product, toAdd = 1 }) {
         </section>
 
         <footer className="w-full bg-gray-300 h-1">
-          <div className={`h-full ${toAdd ? 'bg-page-lightblue' : 'bg-red-400'}`} style={{ width: `${progress}%`, transition: 'width 3s ease-out' }} />
+          <div className={`h-full ${toAdd ? 'bg-page-ntext-page-blue-normal' : 'bg-red-400'}`} style={{ width: `${progress}%`, transition: 'width 3s ease-out' }} />
         </footer>
 
-        <span className={`${toAdd ? 'text-sky-500' : 'text-red-500'} font-bold absolute top-[45%] left-2 text-xs`}>{toAdd ? '+1' : '-1'}</span>
+        <span className={`${toAdd ? 'text-sky-700' : 'text-red-500'} font-bold absolute top-[45%] left-2 text-xs`}>{toAdd ? '+1' : '-1'}</span>
       </main>
     </div>
   );
