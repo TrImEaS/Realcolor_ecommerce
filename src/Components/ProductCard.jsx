@@ -1,14 +1,8 @@
 import { NavLink } from "react-router-dom"
 
 export default function ProductCard({ product }) {
-  const limitedName = product.name.length > 40 ? `${product.name.substring(0, 40)}...`: product.name
-  
   const formattedPrice = (price) => { 
     return parseFloat(price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-  }
-
-  if(product.img_base){
-    console.log(product.img_base)
   }
 
   return(
@@ -28,7 +22,7 @@ export default function ProductCard({ product }) {
       <article className="w-full flex-grow-[0.35] box-border flex flex-col justify-between">
         <p className="flex flex-col">
           <span className="text-xs text-gray-500">SKU: {product.sku}</span>
-          <span>{limitedName}</span>
+          <span className="line-clamp-2">{product.name.replace(/EAN(?::\s*|\s+)\d{5,}/gi, '')}</span>
         </p> 
         <p className="font-bold text-xl">${formattedPrice(product.price_list_1)}</p>
       </article>

@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 import { useProducts } from '../Context/ProductsContext'
 import ProductsCarousel from '../Components/ProductsCarousel'
-import BannersCards from '../Components/Home-Components/BannersCards.jsx'
 import BannerCarousel from '../Components/Home-Components/BannerCarousel.jsx'
 import CategoriesCarousel from '../Components/Home-Components/CategoriesCarousel.jsx'
 import Spinner from '../Components/Products/Spinner.jsx'
@@ -92,7 +91,7 @@ export default function Home() {
         </section>
 
         {/*Categories*/}
-        <section className='w-4/5 max-sm:w-full max-sm:pr-5'>
+        <section className='w-4/5'>
           <CategoriesCarousel/>
         </section>
 
@@ -100,7 +99,7 @@ export default function Home() {
         {
         loading ? <Spinner/>
         :
-        <div className='flex flex-col gap-y-20 w-[82%] max-sm:w-[71%]'>
+        <div className='flex flex-col gap-y-20 pt-10 w-[82%] max-sm:w-[71%]'>
           {/*Products sale carousel*/}
           <section className='relative flex flex-col justify-center w-full gap-y-10'>
             <h1 className='font-medium text-3xl max-[680px]:w-full text-gray-800 w-fit'>

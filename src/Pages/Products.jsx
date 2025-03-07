@@ -27,7 +27,6 @@ export default function Products () {
         throw new Error('Error al obtener productos');
       
       const newProduct = response.data[0]
-      console.log(newProduct)
       setProduct(newProduct)
       document.title = `${newProduct.name} | Technology Line`
 
@@ -123,7 +122,7 @@ export default function Products () {
           </span>
 
           <h1 className='text-2xl font-semibold'>
-            {product.name.replace(/EAN.*/,'')}
+            {product.name.replace(/EAN(?::\s*|\s+)\d{5,}/gi, '')}
           </h1>
 
           {loading 
@@ -219,17 +218,17 @@ export default function Products () {
         </section>
       </header>
 
-      <div className='flex flex-col max-sm:w-[90%] w-[83%] bg-page-blue-normal rounded-lg border shadow-lg'>
+      <div className='flex flex-col max-sm:w-[90%] w-[83%] bg-blue-400 rounded-lg border shadow-lg'>
         <div className='flex p-2 gap-x-3'>
           <span 
             onClick={() => setDescriptionMenu('desc')}          
-            className={`${descriptionMenu === 'desc' ? 'bg-white text-slate-900' : 'text-white'} font-bold hover:bg-white hover:text-slate-900 rounded-3xl border-transparent px-2 py-1 duration-300 cursor-pointer`}>
+            className={`${descriptionMenu === 'desc' ? 'text-white' : ''} font-bold hover:text-white rounded-xl px-2 py-1 duration-300 cursor-pointer`}>
             Descripción
           </span>
-          <span className='py-1 text-gray-200'>|</span>
+          <span className='py-1'>|</span>
           <span 
             onClick={() => setDescriptionMenu('spec')}
-            className={`${descriptionMenu === 'spec' ? 'bg-white text-slate-900' : 'text-white'} font-bold hover:bg-white hover:text-slate-900 rounded-3xl border-transparent px-2 py-1 duration-300 cursor-pointer`}>
+            className={`${descriptionMenu === 'spec' ? 'text-white' : ''} font-bold hover:text-white rounded-xl px-2 py-1 duration-300 cursor-pointer`}>
             Especificaciones
           </span>
         </div>

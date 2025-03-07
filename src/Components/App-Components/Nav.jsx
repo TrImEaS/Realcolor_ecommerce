@@ -14,11 +14,12 @@ export default function Nav() {
     <nav 
       className='z-50 flex flex-col w-full relative items-center bg-white'>
     {/*---Nav top---*/}
-      <section className='flex gap-x-5 max-sm:gap-x-2 justify-between max-sm:justify-center items-center h-28 w-3/4 max-lg:w-full px-2'>
+      <section className='flex gap-x-5 max-sm:gap-x-2 max-sm:max-h-[100px] justify-between max-sm:justify-center items-center h-28 w-3/4 max-lg:w-full px-2 max-sm:px-0'>
         {/*Logo*/}
         <NavLink to='' className='h-[100px] flex items-center max-xl:justify-center'>
           <img src="https://real-color.com.ar/banners-images/Assets/logo_azul.svg" alt="company-logo" className='w-[200px] max-w-[200px] '/>
         </NavLink>
+
 
         {/*Search input*/}
         <div className='max-md:hidden flex w-full max-w-[600px] justify-center items-center mt-3'>
@@ -55,7 +56,7 @@ export default function Nav() {
       </section>
 
       {/*---Nav bottom  MD screen---*/}
-      <section className='md:hidden flex h-[60px] w-full items-center justify-center gap-x-5 bg-page-blue-normal text-slate-50 max-md:justify-start max-sm:justify-between max-md:px-20 max-sm:px-10'>
+      <section className='md:hidden flex h-[50px] w-full items-center justify-center bg-page-blue-normal text-slate-50 max-md:justify-start max-sm:justify-between max-md:px-20 max-sm:px-2'>
         {/* Categorias */}
         <CategoriesMenu/>        
         
