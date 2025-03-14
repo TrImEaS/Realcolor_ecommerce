@@ -31,11 +31,15 @@ export default function Cart() {
       setAddress(clientData.address)
       return
     }
+    else if(shipment === 3){
+      setPostalCode('---')
+      setAddress('---')
+      return
+    }
     else {
       setPostalCode('')
       setAddress('')
     }
-
   }, [shipment])
   
   const handleSubmit = async () => {
@@ -43,7 +47,7 @@ export default function Cart() {
       'subsistemas@real-color.com.ar',
       'revendedores@realcolor.com.ar',
       'mercadolibre4@real-color.com.ar',
-      'marketing@realcolor.com.ar'
+      'pcamio@real-color.com.ar'
     ];
   
     if (!price || !address || !postalCode || !clientData.address || !clientData.email || !clientData.fullname || !clientData.dni || !clientData.postalCode || !clientData.phone) {
@@ -71,6 +75,8 @@ export default function Cart() {
   
       const datos_de_orden = {
         movimiento_numero: orderMovement,
+        company: 'Real Color SRL',
+        footer_img: 'https://real-color.com.ar/banners-images/Assets/logo_azul.svg',
         datos_cliente: {
           nombre_completo: clientData.fullname,
           dni: clientData.dni,
@@ -114,7 +120,7 @@ export default function Cart() {
   
       Swal.fire({
         title: 'Orden enviada con éxito',
-        text: `Número de orden: ${orderMovement}`,
+        text: `¡Gracias por su compra! Su orden #${orderMovement} ha sido confirmada. Hemos enviado el detalle completo de su pedido a su correo electrónico. Si no lo encuentra, por favor revise su carpeta de correo no deseado o spam.`,
         icon: 'success',
         showConfirmButton: true,
         confirmButtonText: 'Cerrar',
@@ -168,19 +174,19 @@ export default function Cart() {
                 className="flex flex-col relative gap-3 box-border border-b-2 border-sky-100 pb-5 justify-center items-center"
               >
                 <section className="w-[150px]">
-                  <img src={p.img_base} className="object-cover w-full h-full" />
+                  <img src={p.img_base} className="w-full h-full object-contain rounded-xl hover:scale-105 transition-transform duration-300" />
                 </section>
 
                 <NavLink to={`/products?product=${p.sku}`} className="flex flex-col justify-center items-center gap-2">
                   <span className="uppercase text-page-blue-normal font-bold">{p.brand}</span>
-                  <span className="text-center tracking-wide px-5 text-gray-800 text-sm">{p.name.replace(/EAN(?::\s*|\s+)\d{5,}/gi, '')}</span>
+                  <span className="text-center tracking-wide px-5 font-medium text-gray-800 text-sm">{p.name.replace(/EAN(?::\s*|\s+)\d{5,}/gi, '')}</span>
                 </NavLink>
                 
-                <div className="w-full flex justify-center text-white items-center">
-                  <button onClick={()=> deleteOneProductOfCart({ productID: p.id })} className="w-7 h-7 bg-page-blue-normal rounded-md flex justify-center items-center border hover:bg-opacity-70 duration-300">-</button>
-                  <span className="min-w-7 min-h-7 bg-page-blue-normal rounded-md flex justify-center items-center border px-1">{p.quantity_selected}</span>
-                  <button onClick={()=> addProductToCart({ p })} className="w-7 h-7 bg-page-blue-normal rounded-md flex justify-center items-center border hover:bg-opacity-70 duration-300">+</button>
-                </div>
+                <section className="w-full flex justify-center text-white items-center mt-1">
+                  <button onClick={()=> deleteOneProductOfCart({ productID: p.id })} className="w-8 h-7 bg-gradient-to-r from-sky-600 to-sky-700 rounded-l-md flex justify-center items-center border-0 hover:from-sky-700 hover:to-sky-500 transition-all duration-300 font-bold">-</button>
+                  <span className="min-w-8 min-h-7 bg-sky-600 flex justify-center items-center border-x-0 px-2 font-medium">{p.quantity_selected}</span>
+                  <button onClick={()=> addProductToCart({ product: p })} className="w-8 h-7 bg-gradient-to-r from-sky-700 to-sky-600 rounded-r-md flex justify-center items-center border-0 hover:from-sky-500 hover:to-sky-700 transition-all duration-300 font-bold">+</button>
+                </section>
 
                 <button 
                   className="absolute top-2 right-2 hover:text-red-500 duration-300"
@@ -354,11 +360,20 @@ export default function Cart() {
             </fieldset>
 
             {
+              shipment === 1 ? (
+                <p className="flex pt-1 items-center gap-2">
+                  <b className="bg-yellow-400 rounded-full mb-[1px] text-white border-yellow-400 border-2 text-lg"><FaInfoCircle/></b>
+                  <span className="text-sm text-gray-700 tracking-wider"> El envio sera cotizado y compartido con usted una vez concretado el pedido</span>
+                </p>
+              ) : 
               shipment === 2 ? (
                 <div className="pt-3 flex flex-col gap-3">
-                  <span className="text-[12px] text-gray-700 tracking-wider"> (El envio sera cotizado y compartido con usted una vez concretado el pedido)</span>
+                  <p className="flex pt-1 items-center gap-2">
+                    <b className="bg-yellow-400 rounded-full mb-[1px] text-white border-yellow-400 border-2 text-lg"><FaInfoCircle/></b>
+                    <span className="text-sm text-gray-700 tracking-wider"> El envio sera cotizado y compartido con usted una vez concretado el pedido</span>
+                  </p>
 
-                  <label htmlFor="Codigo postal" className="relative flex rounded-md items-center px-2 border border-gray-200 shadow-xs focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
+                  <label htmlFor="Codigo postal" className="relative flex rounded-md items-center px-2 max-w-[580px] border border-gray-200 shadow-xs focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
                     <input
                       type="text"
                       id="Codigo postal"
@@ -375,7 +390,7 @@ export default function Cart() {
                     <FaShippingFast className="text-2xl"/>
                   </label>
 
-                  <label htmlFor="Direccion" className="relative flex rounded-md items-center px-2 border border-gray-200 shadow-xs focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
+                  <label htmlFor="Direccion" className="relative flex rounded-md items-center px-2 max-w-[580px] border border-gray-200 shadow-xs focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
                     <input
                       type="text"
                       id="Direccion"
@@ -538,7 +553,7 @@ export default function Cart() {
             } */}
           </section>
 
-          <button onClick={handleSubmit} className="flex flex-col justify-center items-center rounded-lg border shadow-lg h-16 w-full bg-gradient-to-l from-sky-600 to-sky-800 text-white hover:brightness-125 max-w-[360px]">
+          <button onClick={handleSubmit} className="flex flex-col justify-center items-center rounded-lg border shadow-lg h-16 w-full bg-gradient-to-l from-sky-400 to-sky-800 text-white hover:brightness-125 max-w-[360px]">
             Generar pedido
           </button>
         </>
