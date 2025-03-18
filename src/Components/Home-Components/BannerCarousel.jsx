@@ -39,13 +39,13 @@ export default function BannerCarousel() {
       .catch(error => console.error(error));
   };
 
-  // Determinar qué banners mostrar basado en la resolución
   const bannersToShow = isMobile ? mobileBanners : desktopBanners;
   const shouldShowCarousel = bannersToShow.length > 0;
 
   const handleClick = (index) => {
-    const banner = bannersToShow[index];
-    if (banner.path_to) {
+    const adjustedIndex = mostViewed ? index - 1 : index;
+    const banner = bannersToShow[adjustedIndex];
+    if (banner && banner.path_to) {
       navigate(banner.path_to); 
     }
   };
