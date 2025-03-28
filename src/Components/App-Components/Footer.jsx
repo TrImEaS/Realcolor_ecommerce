@@ -37,7 +37,7 @@ export default function Footer() {
       }
     })
 
-    fetch(`${API_URL}/api/clients/subscribe`, {
+    fetch(`${API_URL}/api/clients/addSubscriptor`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email })
@@ -48,12 +48,14 @@ export default function Footer() {
           icon: 'info',
           title: 'Ya se encuentra subscrito, muchas gracias!'
         })
+        setEmail('')
       }
       else if (response.ok) {
         Swal.fire({
           icon: 'success',
           title: 'Subscrito correctamente, muchas gracias!'
         })
+        setEmail('')
       } else {
         console.error('Error al subscribirse, intente nuevamente!')
         Swal.fire({
@@ -155,7 +157,7 @@ export default function Footer() {
           {/*Company description*/}
           <article className="min-w-[200px] flex flex-col gap-y-3 text-page-gray-light text-center lg:text-left">
             <h1 className="font-bold text-white text-lg border-b pb-2">
-              Technology Line
+              Real Color SRL
             </h1>
             <NavLink to={`/others/about_us`} className="hover:text-white transition-colors duration-300 hover:translate-x-1 transform">
               Sobre nosotros
@@ -178,9 +180,6 @@ export default function Footer() {
             </NavLink>
             <NavLink to={`/others/garantia`} className="hover:text-white transition-colors duration-300 hover:translate-x-1 transform">
               Garantia
-            </NavLink>
-            <NavLink to={`/others/about_us`} className="hover:text-white transition-colors duration-300 hover:translate-x-1 transform">
-              Sobre nosotros
             </NavLink>
             <NavLink to={`/others/revendedores`} className="hover:text-white transition-colors duration-300 hover:translate-x-1 transform">
               Revendedores
@@ -213,15 +212,15 @@ export default function Footer() {
             <FaInstagram className='text-2xl md:text-3xl'/>
           </a>
                     
-          <a href="http://qr.afip.gob.ar/?qr=ZvNKTXvJURZjjL1woDCRkg,," target="_F960AFIPInfo" className="hover:opacity-90 transition-opacity duration-300">
-            <img className="rounded-lg w-[40px] md:w-[45px]" src="https://www.afip.gob.ar/images/f960/DATAWEB.jpg" />
+          <a href="http://qr.afip.gob.ar/?qr=iMSYt80fl8JulaP0e_E2eg,," target="_F960AFIPInfo">
+            <img className="nav-footer-afip-img" src="https://http2.mlstatic.com/frontend-assets/mshops-web-home/afip-qr.jpeg" alt="Data fiscal"/>
           </a>
         </div>
       </article>
 
       <section className="flex flex-col justify-center items-center w-full bg-gradient-to-r from-page-gray-light to-gray-100 py-4 px-4 text-center">
         <h1 className="font-bold text-gray-800 mb-2">
-          ©️ 2024 Technology Line SRL
+          ©️ 2024 Real Color SRL
         </h1>
         <p className="text-gray-600 text-sm">
           Las imagenes son a modo ilustrativo. Los precios pueden cambiar sin previo aviso.

@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useCart } from '../../Context/CartContext.jsx';
-import { FaShoppingCart } from "react-icons/fa";
+import { FaArrowUp, FaShoppingCart } from "react-icons/fa";
 import { useState } from 'react';
 import SearchInput from './Nav-Components/SearchInput.jsx'
 import CategoriesMenu from './Nav-Components/CategoriesMenu.jsx'
@@ -12,9 +12,13 @@ export default function Nav() {
 
   return (
     <nav className='z-50 flex flex-col w-full relative items-center'>
-    {/*---Nav top---*/}
+      <NavLink to='/shipments' className='flex z-50 h-8 text-center max-sm:h-10 gap-2 px-3 max-sm:gap-1 max-sm:px-5 cursor-pointer bg-slate-200 w-full items-center text-slate-900 justify-center text-[14px] max-sm:text-[12px]'>
+        <FaArrowUp className='text-[10px] mt-1 animate-bounce'/>
+        <span className='select-none font-medium duration-300'>Envios a todo el pais con precio promocional a las sigueintes localidades</span>
+        <FaArrowUp className='text-[10px] mt-1 animate-bounce'/>
+      </NavLink>
+
       <section className='flex gap-x-5 max-sm:gap-x-2 max-sm:max-h-[100px] justify-between items-center h-28 w-3/4 max-lg:w-full px-2 max-sm:px-0'>
-        {/*Logo*/}
         <NavLink to='/' className='h-[100px] min-w-[200px] max-sm:w-[180px] flex items-center max-xl:justify-center'>
           <img src="https://real-color.com.ar/banners-images/Assets/logo_azul.svg" alt="company-logo" className='max-sm:w-[90%] w-full max-sm:max-w-[200px] max-w-[200px] pb-3'/>
         </NavLink>
@@ -55,7 +59,7 @@ export default function Nav() {
       </section>
 
       {/*---Nav bottom  MD screen---*/}
-      <section className='md:hidden flex h-[50px] pb-3 w-full items-center justify-between text-slate-50 max-sm:justify-between max-md:px-5 max-sm:px-2 max-sm:pl-4 bg-color'> 
+      <section className='md:hidden flex h-[50px] w-full items-center justify-between text-slate-50 max-sm:justify-between max-md:px-5 max-sm:px-2 max-sm:pl-4 bg-color'> 
         {/* Categorias */}
         <CategoriesMenu/>        
         
