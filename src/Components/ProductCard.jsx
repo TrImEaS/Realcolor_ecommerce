@@ -28,7 +28,7 @@ export default function ProductCard({ product }) {
         <img 
           src={product.img_url ? product.img_url : `https://real-color.com.ar/banners-images/Assets/page_icon.webp`}
           alt={product.name}
-          className="w-full h-full object-contain rounded-lg"
+          className="w-full h-full object-contain max-h-[250px] rounded-lg"
           onError={(e) => e.target.src = `https://real-color.com.ar/banners-images/Assets/page_icon.webp`}
         />
       </header>
