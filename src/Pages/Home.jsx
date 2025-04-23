@@ -1,14 +1,16 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { useProducts } from '../Context/ProductsContext'
 import ProductsCarousel from '../Components/ProductsCarousel'
 import BannerCarousel from '../Components/Home-Components/BannerCarousel.jsx'
 import CategoriesCarousel from '../Components/Home-Components/CategoriesCarousel.jsx'
 import Spinner from '../Components/Products/Spinner.jsx'
 import BrandsCarrousel from '../Components/Home-Components/BrandsCarrousel.jsx'
+import useDocumentTitle from '../Utils/useDocumentTitle';
 import "react-responsive-carousel/lib/styles/carousel.min.css"
 
 export default function Home() {
   const { products, loading } = useProducts();
+  useDocumentTitle("Home");
 
   const firstCarousel = useMemo(() => {
     if (!products) return [];

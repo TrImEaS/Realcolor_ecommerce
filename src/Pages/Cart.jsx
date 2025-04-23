@@ -4,6 +4,9 @@ import { FaInfoCircle, FaShippingFast, FaTrash } from "react-icons/fa"
 import { NavLink, useNavigate } from "react-router-dom"
 import axios from "axios"
 import Swal from "sweetalert2"
+import useDocumentTitle from "../Utils/useDocumentTitle";
+import useFormattedPrice from "../Utils/useFormattedPrice";
+
 const API_URL = import.meta.env.MODE === 'production' ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV;
 
 export default function Cart() {
@@ -21,7 +24,8 @@ export default function Cart() {
     phone: ''
   })
   const navigate = useNavigate()
-  
+
+  useDocumentTitle("Mi carrito");
   
   const totalPrice = cartProducts.reduce((acc, p) => acc + parseFloat(p[`price_list_${price}`]), 0);
 
@@ -542,7 +546,7 @@ export default function Cart() {
             
             <footer className="flex flex-col w-full items-center justify-center">
               <h3 className="text-xl text-page-blue-normal">Total:</h3>
-              <span className="font-bold text-2xl text-page-blue-normal">$ {totalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              <span className="font-bold text-2xl text-page-blue-normal">$ {useFormattedPrice(totalPrice)}</span>
             </footer>
 
             {/* {price === 2 && 

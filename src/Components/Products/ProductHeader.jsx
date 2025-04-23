@@ -1,13 +1,10 @@
 import { useCart } from "../../Context/CartContext";
 import ImageSlider from "./ImageSlider";
 import Spinner from "./Spinner";
+import useFormatedPrice from "../../Utils/useFormattedPrice";
 
 export default function ProductHeader({ product, loading }) {
   const { addProductToCart } = useCart()
-
-  const formattedPrice = (price) => {
-    return parseFloat(price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-  }
 
   const handleStockQuantity = () => {
     const quantity = product.stock
@@ -62,20 +59,29 @@ export default function ProductHeader({ product, loading }) {
       <section className='flex tracking-wider flex-col w-[40%] mt-5 min-h-[620px] max-sm:min-h-[500px] justify-center items-center h-fit max-md:w-full border rounded-lg p-8 max-sm:py-0 sm:mb-10 shadow-lg'>
         <div className='min-h-[200px] flex flex-col gap-y-2'>
           <div className='flex flex-col w-full gap-y-3 justify-center'>
-            <section className='flex flex-col text-lg w-full gap-2 border-b pb-3 border-dashed border-page-blue-normal'>
-              <p className='flex flex-col text-center text-[#333333] tracking-widest mb-2 text-2xl'>
+            <section className='flex flex-col items-center text-lg w-full gap-2 border-b pb-3 border-dashed border-page-blue-normal'>
+              <div className='flex flex-col text-center text-[#333333] tracking-widest mb-2 text-2xl'>
                 <span>
                   PRECIO LISTA
                 </span>
                 <span>
-                  <b className='font-semibold text-[#333333]'>{`$${formattedPrice(product.price_list_1)}`}</b>
+                  <b className='font-semibold text-[#333333]'>{`$${useFormatedPrice(product.price_list_1)}`}</b>
                 </span>
-              </p>
+
+                <p className='flex text-center text-[#888] tracking-widest text-xs'>
+                  <span>
+                    PRECIO LISTA S/IMP. NAC.
+                  </span>
+                  <span>
+                    <b className='text-xs text-[#888]'>{`$${useFormatedPrice(product.price_list_1 / ((product.tax_percentage / 100) + 1))}`}</b>
+                  </span>
+                </p>
+              </div>
 
               <div className='flex font-semibold text-red-600 flex-col text-center items-center text-base tracking-tighter'>
                 <span>PROMO: EFECTIVO / TRANSFERENCIA BANCARIA: </span>
                 <p className='pl-5 font-semibold flex gap-1 text-[#15803d] items-center tracking-normal'>
-                  <span>{`$${formattedPrice(product.price_list_2)}`}</span>
+                  <span>{`$${useFormatedPrice(product.price_list_2)}`}</span>
                   <span className='text-xs text-[#dc7b26]'>(Ahorras: ${((product.price_list_2 - product.price_list_1)*-1).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})})</span>
                 </p>
               </div>

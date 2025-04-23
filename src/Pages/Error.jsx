@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
+import useDocumentTitle from '../Utils/useDocumentTitle';
 
 export default function Error() {
   const navigate = useNavigate()
+  useDocumentTitle("No se ha encontrado la ruta");
 
-  useEffect(() => {
-    document.title = `No se ha encontrado la ruta | Technology Line`
-    
+  useEffect(() => {    
     document.documentElement.style.overflow = 'hidden'
     document.body.style.overflow = 'hidden'
 
