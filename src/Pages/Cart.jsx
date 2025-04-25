@@ -5,6 +5,7 @@ import { NavLink, useNavigate } from "react-router-dom"
 import axios from "axios"
 import Swal from "sweetalert2"
 import useDocumentTitle from "../Utils/useDocumentTitle";
+import useCleanEan from "../Utils/useCleanEan";
 import useFormattedPrice from "../Utils/useFormattedPrice";
 
 const API_URL = import.meta.env.MODE === 'production' ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV;
@@ -183,7 +184,7 @@ export default function Cart() {
 
                 <NavLink to={`/products?product=${p.sku}`} className="flex flex-col justify-center items-center gap-2">
                   <span className="uppercase text-page-blue-normal font-bold">{p.brand}</span>
-                  <span className="text-center tracking-wide px-5 font-medium text-gray-800 text-sm">{p.name.replace(/EAN(?::\s*|\s+)\d{5,}/gi, '')}</span>
+                  <span className="text-center tracking-wide px-5 font-medium text-gray-800 text-sm">{useCleanEan(p.name)}</span>
                 </NavLink>
                 
                 <section className="w-full flex justify-center text-white items-center mt-1">

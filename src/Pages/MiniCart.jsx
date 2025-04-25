@@ -2,6 +2,7 @@ import { FaDotCircle, FaTimes, FaTimesCircle } from "react-icons/fa";
 import { useCart } from "../Context/CartContext";
 import { NavLink } from "react-router-dom";
 import useFormattedPrice from "../Utils/useFormattedPrice";
+import useCleanEan from "../Utils/useCleanEan";
 
 export default function MiniCart({ showCart, setShowCart }) {
   const { cartProducts, getTotalOfProducts, deleteOneProductOfCart, addProductToCart, cleanCart } = useCart()
@@ -59,7 +60,7 @@ export default function MiniCart({ showCart, setShowCart }) {
               <aside className="w-[60%] min-h-[100px] flex flex-col text-xs gap-y-2 justify-between">
                 <NavLink onClick={()=> setShowCart(0)} className='flex flex-col hover:text-sky-700 transition-colors duration-300'  to={`/products?product=${product.sku}`}>
                   <span className="uppercase font-bold text-page-blue-normal">{product.brand}</span>
-                  <span className="truncate whitespace-normal font-medium">{product.name.replace(/EAN(?::\s*|\s+)\d{5,}/gi, '')}</span>
+                  <span className="truncate whitespace-normal font-medium">{useCleanEan(product.name)}</span>
                   <span className="pt-1 font-bold text-gray-700">Precio Lista - <span className="text-green-600">${useFormattedPrice(product.price_list_3)}</span></span>
                 </NavLink> 
 

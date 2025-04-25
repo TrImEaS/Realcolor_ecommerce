@@ -2,6 +2,7 @@ import { useCart } from "../../Context/CartContext";
 import ImageSlider from "./ImageSlider";
 import Spinner from "./Spinner";
 import useFormatedPrice from "../../Utils/useFormattedPrice";
+import useCleanEan from "../../Utils/useCleanEan";
 
 export default function ProductHeader({ product, loading }) {
   const { addProductToCart } = useCart()
@@ -47,7 +48,7 @@ export default function ProductHeader({ product, loading }) {
         </span>
 
         <h1 className='text-2xl font-semibold max-sm:text-xl'>
-          {product.name.replace(/EAN(?::\s*|\s+)\d{5,}/gi, '')}
+          {useCleanEan(product.name)}
         </h1>
 
         {loading 

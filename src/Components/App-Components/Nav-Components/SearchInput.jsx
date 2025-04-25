@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 import { useProducts } from '../../../Context/ProductsContext';
 import useFormattedPrice from '../../../Utils/useFormattedPrice'
+import useCleanEan from '../../../Utils/useCleanEan'
 import Spinner from '../../Products/Spinner'
 
 export default function SearchInput() {
@@ -110,7 +111,7 @@ function SearchResults({ keyword, setKeyword }) {
           <article className="w-[50%] h-full box-border flex flex-col justify-between">
             <p className='flex flex-col text-sm'>
               <span className='text-xs text-gray-500'>SKU: {product.sku}</span>
-              <span className='line-clamp-3'>{product.name.replace(/EAN(?::\s*|\s+)\d{5,}/gi, '')}</span>
+              <span className='line-clamp-3'>{useCleanEan(product.name)}</span>
             </p>
             <p className="font-bold text-xl max-[1025px]:text-sm">${useFormattedPrice(product.price_list_1)}</p>
           </article>
