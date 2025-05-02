@@ -83,7 +83,7 @@ export default function ProductHeader({ product, loading }) {
                 <span>PROMO: EFECTIVO / TRANSFERENCIA BANCARIA: </span>
                 <p className='pl-5 font-semibold flex gap-1 text-[#15803d] items-center tracking-normal'>
                   <span>{`$${useFormatedPrice(product.price_list_2)}`}</span>
-                  <span className='text-xs text-[#dc7b26]'>(Ahorras: ${((product.price_list_2 - product.price_list_1)*-1).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})})</span>
+                  <span className='text-xs text-[#dc7b26]'>(Ahorras: ${useFormatedPrice(((product.price_list_2 - product.price_list_1)*-1))})</span>
                 </p>
               </div>
             </section>
@@ -96,7 +96,7 @@ export default function ProductHeader({ product, loading }) {
                   <span className='text-[#1e40af] font-semibold'>3</span> 
                   <span className='text-[#1e40af]'>cuotas</span>
                   <span>de:</span> 
-                  <span className='text-[#1e40af] font-semibold'>{`$${(parseFloat(product.price_list_3)/3).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</span>
+                  <span className='text-[#1e40af] font-semibold'>{`$${useFormatedPrice((parseFloat(product.price_list_3)/3))}`}</span>
                 </p>
               </article>  
 
@@ -105,7 +105,7 @@ export default function ProductHeader({ product, loading }) {
                   <span className='text-[#1e40af] font-semibold'>6</span> 
                   <span className='text-[#1e40af]'>cuotas</span>
                   <span>de:</span> 
-                  <span className='text-[#1e40af] font-semibold'>{`$${(parseFloat(product.price_list_4)/6).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</span>
+                  <span className='text-[#1e40af] font-semibold'>{`$${(useFormatedPrice(parseFloat(product.price_list_4)/6))}`}</span>
                 </p>
               </article>  
 
@@ -114,7 +114,7 @@ export default function ProductHeader({ product, loading }) {
                   <span className='text-[#1e40af] font-semibold'>9</span> 
                   <span className='text-[#1e40af]'>cuotas</span>
                   <span>de:</span> 
-                  <span className='text-[#1e40af] font-semibold'>{`$${(parseFloat(product.price_list_5)/9).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</span>
+                  <span className='text-[#1e40af] font-semibold'>{`$${(useFormatedPrice(parseFloat(product.price_list_5)/9))}`}</span>
                 </p>
               </article>  
 
@@ -123,7 +123,7 @@ export default function ProductHeader({ product, loading }) {
                   <span className='text-[#1e40af] font-semibold'>12</span> 
                   <span className='text-[#1e40af]'>cuotas</span>
                   <span>de:</span> 
-                  <span className='text-[#1e40af] font-semibold'>{`$${(parseFloat(product.price_list_6)/12).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</span>
+                  <span className='text-[#1e40af] font-semibold'>{`$${(useFormatedPrice(parseFloat(product.price_list_6)/12))}`}</span>
                 </p>
 
               </article>  
