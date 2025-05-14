@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react'
+import { useMemo } from 'react'
 import { useProducts } from '../Context/ProductsContext'
 import ProductsCarousel from '../Components/ProductsCarousel'
 import BannerCarousel from '../Components/Home-Components/BannerCarousel.jsx'
@@ -125,9 +125,7 @@ export default function Home() {
         {/*Products sale carousel*/}
         {
         loading 
-        ? (
-          <Spinner/>
-        )
+        ? ( <Spinner/>)
         : (
           <div className='flex flex-col gap-y-20 pt-10 w-[85%]'>
             {/*Products sale carousel*/}

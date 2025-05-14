@@ -29,6 +29,7 @@ export default function ProductCard({ product }) {
           className="w-full h-full object-contain max-h-[250px] rounded-lg"
           onError={(e) => e.target.src = `https://real-color.com.ar/banners-images/Assets/page_icon.webp`}
         />
+        <img className="absolute top-1 right-1 object-contain h-10 w-10 rounded-lg" src="https://technologyline.com.ar//banners-images/Assets/sale-icon.svg"/>
       </header>
 
       <article className="w-full flex-grow-[0.35] box-border flex flex-col justify-between">
@@ -36,7 +37,7 @@ export default function ProductCard({ product }) {
           <span className="text-xs text-gray-500 max-sm:text-[9px]">SKU: {product.sku}</span>
           <span className="line-clamp-2 font-medium max-sm:text-[10px]">{useCleanEan(product.name)}</span>
         </p> 
-        <p className="font-bold text-xl max-sm:text-base">${useFormattedPrice(product.price_list_1)}</p>
+        <p className="font-bold text-xl max-sm:text-base">${product.price_list_1 ? useFormattedPrice(product.price_list_1) : '  -  -  -  -  -  -'}</p>
       </article>
     </NavLink>
   )
