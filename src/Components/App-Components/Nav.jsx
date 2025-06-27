@@ -1,14 +1,28 @@
 import { NavLink } from 'react-router-dom'
 import { useCart } from '../../Context/CartContext.jsx';
 import { FaArrowUp, FaShoppingCart } from "react-icons/fa";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SearchInput from './Nav-Components/SearchInput.jsx'
 import CategoriesMenu from './Nav-Components/CategoriesMenu.jsx'
 import MiniCart from '../../Pages/MiniCart.jsx';
+import { PiUserCircleFill } from 'react-icons/pi';
 import HotSale from '../../Components/HotSale.jsx'
+import { useAuth } from "../../Context/AuthContext";
+
 export default function Nav() {
+  const { userIsLoged } = useAuth();
   const { getTotalOfProducts } = useCart()
   const [showCart, setShowCart] = useState(3)
+  const [location, setLocation] = useState('/login')
+
+  useEffect(() => {
+    if (!userIsLoged) {
+      setLocation('/login');
+    } 
+    else {
+      setLocation('/myaccount');
+    }
+  }, [userIsLoged]);
 
   return (
     <nav className='z-50 flex flex-col w-full relative items-center'>
@@ -31,11 +45,12 @@ export default function Nav() {
 
         {/*User items */}
         <article className='flex gap-x-6 max-sm:gap-x-3 pr-5 max-sm:pr-8 items-center mt-[8px] w-fit'>
-          <div className='flex text-white items-center w-full gap-2 justify-between max-sm:justify-end'>
-            {/* <button disabled className='flex items-center text-nowrap gap-1 text-opacity-15' title='Lo sentimos, esta opcion esta en mantenimiento, opcion en mantenimiento'>
-              <PiUserCircleFill className='text-3xl'/>
-              <span className='max-sm:hidden'>Mi cuenta</span>
-            </button> */}
+          <div className='flex text-black items-center w-full gap-2 justify-between max-sm:justify-end'>
+            <NavLink to={location} className='flex items-center'>
+              <button className='flex items-center text-nowrap gap-1 text-opacity-15 hover:scale-110 duration-300' title='Ir a mi cuenta'>
+                <PiUserCircleFill className='text-3xl text-page-blue-dark'/>
+              </button>
+            </NavLink>
 
             <button 
               className='text-2xl relative hover:scale-110 duration-300'
