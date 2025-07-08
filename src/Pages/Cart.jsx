@@ -4,6 +4,7 @@ import { FaInfoCircle, FaShippingFast, FaTrash } from "react-icons/fa"
 import { NavLink, useNavigate } from "react-router-dom"
 import axios from "axios"
 import Swal from "sweetalert2"
+import { useAuth } from "../Context/AuthContext";
 import useDocumentTitle from "../Utils/useDocumentTitle";
 import useCleanEan from "../Utils/useCleanEan";
 import useFormattedPrice from "../Utils/useFormattedPrice";
@@ -11,6 +12,7 @@ import useFormattedPrice from "../Utils/useFormattedPrice";
 const API_URL = import.meta.env.MODE === 'production' ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV;
 
 export default function Cart() {
+  const { userData, userIsLoged } = useAuth();
   const { cartProducts, getTotalOfProducts, deleteOneProductOfCart, addProductToCart, deleteProductOfCart, cleanCart } = useCart()
   const [price, setPrice] = useState(1)
   const [address, setAddress] = useState('')
@@ -30,6 +32,20 @@ export default function Cart() {
   useDocumentTitle("Mi carrito");
   
   const totalPrice = cartProducts.reduce((acc, p) => acc + parseFloat(p[`price_list_${price}`]), 0);
+
+  useEffect(() => {
+    if (userData.email) {
+      setClientData({
+        fullname: userData.fullname,
+        dni: userData.dni,
+        address: userData.address,
+        location: userData.location,
+        email:    userData.email,
+        postalCode: userData.postal_code,
+        phone:    userData.phone
+      })
+    }
+  }, [userData])
 
   useEffect(()=> {
     if(shipment === 1) {
@@ -55,8 +71,13 @@ export default function Cart() {
       'mercadolibre4@real-color.com.ar',
       'pcamio@real-color.com.ar'
     ];
+
+    if (!clientData?.email) {
+      return Swal.fire('Atención', 'Tu sesión expiró, vuelve a iniciar sesión', 'warning')
+    }
+
   
-    if (!price || !address || !postalCode || !clientData.address || !clientData.email || !clientData.fullname || !clientData.dni || !clientData.postalCode || !clientData.phone) {
+    if (!price || !address || !postalCode || !clientData.address || !clientData.fullname || !clientData.dni || !clientData.postalCode || !clientData.phone) {
       return Swal.fire('Atención', 'Faltan campos a completar', 'warning');
     }
   
@@ -81,6 +102,7 @@ export default function Cart() {
   
       const datos_de_orden = {
         movimiento_numero: orderMovement,
+        client_email: clientData.email,
         company: 'Real Color SRL',
         footer_img: 'https://real-color.com.ar/banners-images/Assets/logo_azul.svg',
         datos_cliente: {
@@ -102,6 +124,7 @@ export default function Cart() {
           cp: postalCode || '-',
           direccion: address || '-'
         },
+        total: totalPrice,
         abona_en:
           price === 1 ? '1 Pago Débito - Crédito' :
           price === 2 ? 'Efectivo - Transferencia' :
@@ -126,7 +149,7 @@ export default function Cart() {
   
       Swal.fire({
         title: 'Orden enviada con éxito',
-        text: `¡Gracias por elegirnos! Su pedido #${orderMovement} esta siendo procesado, para finalizar su compra un operador se pondra en contacto via whatsapp y o mail (De Lunes a Viernes de 09:00 a 18:00hs), de no recibir respuesta, llame al este numero: 1133690584. Hemos enviado el detalle completo de su pedido a su correo electrónico, de no encontrarlo, por favor revise su carpeta de correo no deseado o spam.`,
+        text: `¡Gracias por elegirnos! Su pedido #${orderMovement} esta siendo procesado, para finalizar su compra un operador se pondra en contacto via Whatsapp (De Lunes a Viernes de 09:00 a 18:00hs), de no recibir respuesta, en las proximas 24hs hábiles puede llamar a este numero: 1133690584. Hemos enviado el detalle completo de su pedido a su correo electrónico, de no encontrarlo, por favor revise su carpeta de correo no deseado o spam.`,
         icon: 'success',
         showConfirmButton: true,
         confirmButtonText: 'Cerrar',
@@ -295,23 +318,24 @@ export default function Cart() {
                   placeholder="Phone"
                 />
 
-                <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
+                <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-400 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
                   Celular <b>*</b>
                 </span>
               </label>  
 
-              <label htmlFor="Email" className="relative flex rounded-md items-center px-2 border border-gray-200 shadow-xs focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
+              <label htmlFor="Email" className="relative flex rounded-md items-center px-2 border border-gray-200 bg-opacity-55 text-opacity-55 shadow-xs ">
                 <input
                   type="email"
                   id="Email"
                   value={clientData.email}
                   onChange={(e) => setClientData(prev => ({ ...prev, email: e.target.value }))}
-                  className="peer bg-transparent border-transparent w-full placeholder-transparent h-14 px-3 focus:ring-0 placeholder:text-xs outline-none"
+                  className="peer bg-transparent border-transparent w-full placeholder-transparent cursor-default h-14 px-3 focus:ring-0 placeholder:text-xs text-gray-600 outline-none"
                   placeholder="Email"
+                  readOnly
                 />
 
-                <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-                  Email <b>*</b>
+                <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-400 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
+                  Email
                 </span>
               </label>  
             </>
