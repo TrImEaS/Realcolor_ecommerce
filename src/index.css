@@ -43,6 +43,16 @@
   z-index: 100;
 }
 
+#root {
+  margin: 0;
+  padding: 0;
+  @apply bg-gradient-to-r from-page-gray-light to-gray-100;
+}
+
+.dropshadow-cyan {
+  filter: drop-shadow(4px 4px 8px #036988);
+}
+
 #btn:hover {
   filter: drop-shadow(white 1px 1px 15px ) ;
 }

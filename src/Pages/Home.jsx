@@ -1,5 +1,6 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useProducts } from '../Context/ProductsContext'
+import { NavLink } from 'react-router-dom'
 import ProductsCarousel from '../Components/ProductsCarousel'
 import BannerCarousel from '../Components/Home-Components/BannerCarousel.jsx'
 import CategoriesCarousel from '../Components/Home-Components/CategoriesCarousel.jsx'
@@ -10,8 +11,18 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"
 
 export default function Home() {
   const { products, loading } = useProducts();
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 830);
+  const bannerName = !isMobile ? 'https://technologyline.com.ar/banners-images/Assets/banner_desktop_1_1752775213666.webp' : 'https://technologyline.com.ar/banners-images/Assets/banner_mobile_1_1752775192695.webp'
+ 
   useDocumentTitle("Home");
 
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 830);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  
   const firstCarousel = useMemo(() => {
     if (!products) return [];
     
@@ -55,8 +66,23 @@ export default function Home() {
   return (
       <div name='home' className={`flex box-border flex-col items-center gap-5 min-h-screen h-full w-full pb-5`}>
         {/*Banners*/}
-        <section className='max-sm:min-h-[150px] max-md:min-h-[200px] min-h-[230px]'>
+        <section className='max-xl:min-h-[150px] min-h-[240px]'>
           <BannerCarousel/>
+        </section>
+
+        {/*Categories*/}
+        <section className='w-4/5'>
+          <CategoriesCarousel/>
+        </section>
+
+        <section className='w-[90%] h-[220px] duration-200 overflow-hidden hover:scale-[1.03]'>
+          <NavLink to='/search?brand=philco' className='block h-full'>
+            <img 
+              src={bannerName} 
+              className='w-full h-full rounded-[90px] max-md:rounded-[90px] object-contain duration-300' 
+              alt="Philco Days Promotion"
+            />
+          </NavLink>
         </section>
 
         <section className='flex flex-col items-center w-full'>
@@ -115,11 +141,6 @@ export default function Home() {
                 </div>
               </div>
           </div>
-        </section>
-
-        {/*Categories*/}
-        <section className='w-4/5'>
-          <CategoriesCarousel/>
         </section>
 
         {/*Products sale carousel*/}
