@@ -36,7 +36,7 @@ export default function ProductCard ({ product }) {
             className="w-full h-full max-h-[250px] pt-1 object-contain rounded-3xl"
             onError={(e) => { e.target.src = 'https://technologyline.com.ar/banners-images/Assets/page-icon.jpeg' }}
           />
-          {
+          {/* {
             (
               product.sub_category.toLowerCase().includes('consolas') ||
               product.sub_category.toLowerCase().includes('tablet') ||
@@ -45,7 +45,7 @@ export default function ProductCard ({ product }) {
               product.sub_category.toLowerCase().includes('notebooks')
             ) &&
               <img className="absolute top-1 right-2 object-cover h-14 w-20 rounded-lg" src="https://technologyline.com.ar/banners-images/Assets/logo_mesninies.webp"/>
-          }
+          } */}
         </header>
 
         <article className="w-full h-[40%] box-border flex flex-col justify-center gap-1 border-x rounded-3xl">
