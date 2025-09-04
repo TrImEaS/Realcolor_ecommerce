@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useProducts } from '../Context/ProductsContext'
-import { NavLink } from 'react-router-dom'
 import ProductsCarousel from '../Components/ProductsCarousel'
 import BannerCarousel from '../Components/Home-Components/BannerCarousel.jsx'
 import CategoriesCarousel from '../Components/Home-Components/CategoriesCarousel.jsx'
@@ -8,6 +7,7 @@ import Spinner from '../Components/Products/Spinner.jsx'
 import BrandsCarrousel from '../Components/Home-Components/BrandsCarrousel.jsx'
 import useDocumentTitle from '../Utils/useDocumentTitle'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
+import { NavLink } from 'react-router-dom'
 
 export default function Home () {
   const { products, loading } = useProducts()
@@ -78,29 +78,29 @@ export default function Home () {
   }, [products])
 
   return (
-    <div name='home' className={'flex box-border flex-col items-center gap-5 min-h-screen h-full w-full pb-5'}>
-      {/* Banners */}
-      <section className='max-xl:min-h-[150px] min-h-[240px]'>
-        <BannerCarousel/>
-      </section>
+      <div name='home' className={'flex box-border flex-col items-center gap-5 min-h-screen h-full w-full pb-5'}>
+        {/* Banners */}
+        <section className='max-xl:min-h-[150px] min-h-[240px]'>
+          <BannerCarousel/>
+        </section>
 
-      {/* Categories */}
-      <section className='w-4/5'>
-        <CategoriesCarousel/>
-      </section>
+        {/* Categories */}
+        <section className='w-4/5'>
+          <CategoriesCarousel/>
+        </section>
 
-      {/* <section className='w-[90%] h-[220px] duration-200 overflow-hidden hover:scale-[1.03]'>
-        <NavLink to='/search?brand=philco' className='block h-full'>
-          <img
-            src={bannerName}
-            className='w-full h-full rounded-[90px] max-md:rounded-[90px] object-contain duration-300'
-            alt="Philco Days Promotion"
-          />
-        </NavLink>
-      </section> */}
+        {/* <section className='w-[90%] h-[220px] duration-200 overflow-hidden hover:scale-[1.03]'>
+          <NavLink to='/search?brand=philco' className='block h-full'>
+            <img
+              src={bannerName}
+              className='w-full h-full rounded-[90px] max-md:rounded-[90px] object-contain duration-300'
+              alt="Philco Days Promotion"
+            />
+          </NavLink>
+        </section> */}
 
-      <section className='flex flex-col items-center w-full'>
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-6 w-4/5 max-w-7xl'>
+        <section className='flex flex-col items-center w-full'>
+          <div className='grid grid-cols-1 md:grid-cols-3 gap-6 w-4/5 max-w-7xl'>
             <div className='group max-sm:w-[100%] max-sm:h-[85%] flex flex-col items-center justify-center bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1'>
               <div className='flex flex-col xl:flex-row items-center gap-4'>
                 <div className='flex-shrink-0'>
@@ -154,65 +154,66 @@ export default function Home () {
                 </div>
               </div>
             </div>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* Products sale carousel */}
-      {
-      loading
-        ? (<Spinner/>)
-        : (
-        <div className='flex flex-col gap-y-20 pt-10 w-[85%] max-sm:w-[95%]'>
-          {/* Products sale carousel */}
-          {/* <section className='relative flex flex-col justify-center w-full gap-y-10'>
-            <h1 className='font-medium text-3xl max-sm:text-xl max-sm:text-center max-[680px]:w-full text-gray-800 w-fit'>
-              MES DE LA NIÑEZ
-            </h1>
-            <ProductsCarousel style={'pb-5'} rows={1} filterProducts={fiveCarousel}/>
-          </section> */}
+        {/* Products sale carousel */}
+        {loading
+          ? (
+            <Spinner/>
+            )
+          : (
+            <div className='flex flex-col gap-y-20 pt-10 w-[85%] max-sm:w-[95%]'>
+              {/* Products sale carousel */}
+              {/* <section className='relative flex flex-col justify-center w-full gap-y-10'>
+                <h1 className='font-medium text-3xl max-sm:text-xl max-sm:text-center max-[680px]:w-full text-gray-800 w-fit'>
+                  MES DE LA NIÑEZ
+                </h1>
+                <ProductsCarousel style={'pb-5'} rows={1} filterProducts={fiveCarousel}/>
+              </section> */}
 
-          {/* Products sale carousel */}
-          <section className='relative flex flex-col justify-center w-full gap-y-10'>
-            <h1 className='font-medium text-3xl max-[680px]:w-full text-gray-800 w-fit'>
-              OFERTAS CLIMATIZACION
-            </h1>
-            <ProductsCarousel style={'pb-5'} rows={1} filterProducts={firstCarousel}/>
-          </section>
+              {/* Products sale carousel */}
+              <section className='relative flex flex-col justify-center w-full gap-y-10'>
+                <h1 className='font-medium text-3xl max-sm:text-xl max-sm:text-center max-[680px]:w-full text-gray-800 w-fit'>
+                  OFERTAS CLIMATIZACION
+                </h1>
+                <ProductsCarousel style={'pb-5'} rows={1} filterProducts={firstCarousel}/>
+              </section>
 
-          {/* Products news carousel */}
-          <section className='relative flex flex-col justify-center w-full gap-y-10'>
-            <h1 className='font-medium text-3xl max-[680px]:w-full text-gray-800 w-fit'>
-              OFERTAS TECNOLOGIA
-            </h1>
-              <ProductsCarousel style={'pb-5'} rows={1} filterProducts={secondCarousel}/>
-          </section>
+              {/* Products news carousel */}
+              <section className='relative flex flex-col justify-center w-full gap-y-10'>
+                <h1 className='font-medium text-3xl max-sm:text-xl max-sm:text-center max-[680px]:w-full text-gray-800 w-fit'>
+                  OFERTAS TECNOLOGIA
+                </h1>
+                  <ProductsCarousel style={'pb-5'} rows={1} filterProducts={secondCarousel}/>
+              </section>
 
-          {/* Products recomendations carousel */}
-          <section className='relative flex flex-col justify-center w-full gap-y-10'>
-            <h1 className='font-medium text-3xl max-[680px]:w-full text-gray-800 w-fit'>
-              OFERTAS PARA HOGAR
-            </h1>
-              <ProductsCarousel style={'pb-5'} rows={1} filterProducts={thirdCarousel}/>
-          </section>
+              {/* Products recomendations carousel */}
+              <section className='relative flex flex-col justify-center w-full gap-y-10'>
+                <h1 className='font-medium text-3xl max-sm:text-xl max-sm:text-center max-[680px]:w-full text-gray-800 w-fit'>
+                  OFERTAS PARA HOGAR
+                </h1>
+                  <ProductsCarousel style={'pb-5'} rows={1} filterProducts={thirdCarousel}/>
+              </section>
 
-          {/* Products gama carousel */}
-          {/* <section className='relative flex flex-col justify-center w-full gap-y-10'>
-            <h1 className='font-medium text-3xl max-[680px]:w-full text-gray-800 w-fit'>
-              MAS OFERTAS
-            </h1>
-              <ProductsCarousel style={'pb-5'} rows={1} filterProducts={fourthCarousel}/>
-          </section> */}
-        </div>
-          )
-      }
+              {/* Products gama carousel */}
+              <section className='relative flex flex-col justify-center w-full gap-y-10'>
+                <h1 className='font-medium text-3xl max-sm:text-xl max-sm:text-center max-[680px]:w-full text-gray-800 w-fit'>
+                  MAS OFERTAS
+                </h1>
+                  <ProductsCarousel style={'pb-5'} rows={1} filterProducts={fourthCarousel}/>
+              </section>
+            </div>
+            )
+        }
 
-      <section className='w-[82%] h-fit flex flex-col gap-y-5 pt-10'>
-        <span className='font-bold text-2xl text-gray-800 w-full'>Conoce nuestras marcas</span>
+        <section className='w-[82%] h-fit flex flex-col gap-y-5 pt-10'>
+          <span className='font-medium text-3xl max-sm:text-xl text-gray-800 w-full'>Conoce nuestras marcas</span>
 
-        <div className='select-none'>
-          <BrandsCarrousel/>
-        </div>
-      </section>
-    </div>
+          <div className='select-none'>
+            <BrandsCarrousel/>
+          </div>
+        </section>
+      </div>
   )
 }
