@@ -77,7 +77,7 @@ export default function BannerCarousel () {
           onClickItem={handleClick}
           className="cursor-pointer"
         >
-          {mostViewed &&
+          {/* mostViewed &&
             <div
               className='w-full h-full'
               onClick={() => {
@@ -97,7 +97,7 @@ export default function BannerCarousel () {
                 </div>
               </div>
             </div>
-          }
+          */}
           {bannersToShow.map((banner, index) => (
             <div key={index + new Date()} className="w-full relative overflow-hidden">
               <img
