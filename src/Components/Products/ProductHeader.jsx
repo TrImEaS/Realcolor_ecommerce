@@ -1,36 +1,37 @@
-import { useCart } from "../../Context/CartContext";
-import ImageSlider from "./ImageSlider";
-import Spinner from "./Spinner";
-import useFormatedPrice from "../../Utils/useFormattedPrice";
-import useCleanEan from "../../Utils/useCleanEan";
+import { useCart } from '../../Context/CartContext'
+import ImageSlider from './ImageSlider'
+import Spinner from './Spinner'
+import useFormatedPrice from '../../Utils/useFormattedPrice'
+import useCleanEan from '../../Utils/useCleanEan'
+import { FaCartPlus } from 'react-icons/fa'
 
-export default function ProductHeader({ product, loading }) {
-  const { addProductToCart } = useCart()
+export default function ProductHeader ({ product, loading }) {
+  const { addProductToCart, completeOrder } = useCart()
 
   const handleStockQuantity = () => {
     const quantity = product.stock
-    if(quantity === 1){
+    if (quantity === 1) {
       return (
         <span className='text-red-600'>
           Ultima unidad
         </span>
-        )
+      )
     }
 
-    if(quantity < 5){
+    if (quantity < 5) {
       return (
         <span className='text-orange-400 font-semibold'>
           Bajo
         </span>
-        )
+      )
     }
 
-    if(quantity < 10){
+    if (quantity < 10) {
       return (
         <span className='text-yellow-400 font-semibold'>
           Medio
         </span>
-        )
+      )
     }
 
     return (
@@ -53,8 +54,8 @@ export default function ProductHeader({ product, loading }) {
           {useCleanEan(product.name)}
         </h1>
 
-        {loading 
-          ? <div><Spinner /></div> 
+        {loading
+          ? <div><Spinner /></div>
           : <ImageSlider loadedImages={product.img_urls}/>
         }
       </section>
@@ -85,50 +86,50 @@ export default function ProductHeader({ product, loading }) {
                 <span>PROMO: EFECTIVO / TRANSFERENCIA BANCARIA: </span>
                 <p className='pl-5 font-semibold flex gap-1 text-[#15803d] items-center tracking-normal'>
                   <span>{`$${useFormatedPrice(product.price_list_2)}`}</span>
-                  <span className='text-xs text-[#dc7b26]'>(Ahorras: ${useFormatedPrice(((product.price_list_2 - product.price_list_1)*-1))})</span>
+                  <span className='text-xs text-[#dc7b26]'>(Ahorras: ${useFormatedPrice(((product.price_list_2 - product.price_list_1) * -1))})</span>
                 </p>
               </div>
             </section>
-            
+
             <section className='flex flex-col items-center mb-5 w-full gap-y-3 justify-center'>
               <span className='font-bold text-[#2563eb]'>¡Opcion de compra en cuotas fijas!</span>
 
               <article className='flex flex-col'>
                 <p className='flex w-fit justify-center gap-1 p-1'>
-                  <span className='text-[#1e40af] font-semibold'>3</span> 
+                  <span className='text-[#1e40af] font-semibold'>3</span>
                   <span className='text-[#1e40af]'>cuotas</span>
-                  <span>de:</span> 
-                  <span className='text-[#1e40af] font-semibold'>{`$${useFormatedPrice((parseFloat(product.price_list_3)/3))}`}</span>
+                  <span>de:</span>
+                  <span className='text-[#1e40af] font-semibold'>{`$${useFormatedPrice((parseFloat(product.price_list_3) / 3))}`}</span>
                 </p>
-              </article>  
+              </article>
 
               <article className='flex flex-col'>
                 <p className='flex w-fit justify-center gap-1 p-1'>
-                  <span className='text-[#1e40af] font-semibold'>6</span> 
+                  <span className='text-[#1e40af] font-semibold'>6</span>
                   <span className='text-[#1e40af]'>cuotas</span>
-                  <span>de:</span> 
-                  <span className='text-[#1e40af] font-semibold'>{`$${(useFormatedPrice(parseFloat(product.price_list_4)/6))}`}</span>
+                  <span>de:</span>
+                  <span className='text-[#1e40af] font-semibold'>{`$${(useFormatedPrice(parseFloat(product.price_list_4) / 6))}`}</span>
                 </p>
-              </article>  
+              </article>
 
               <article className='flex flex-col'>
                 <p className='flex w-fit justify-center gap-1 p-1'>
-                  <span className='text-[#1e40af] font-semibold'>9</span> 
+                  <span className='text-[#1e40af] font-semibold'>9</span>
                   <span className='text-[#1e40af]'>cuotas</span>
-                  <span>de:</span> 
-                  <span className='text-[#1e40af] font-semibold'>{`$${(useFormatedPrice(parseFloat(product.price_list_5)/9))}`}</span>
+                  <span>de:</span>
+                  <span className='text-[#1e40af] font-semibold'>{`$${(useFormatedPrice(parseFloat(product.price_list_5) / 9))}`}</span>
                 </p>
-              </article>  
+              </article>
 
               <article className='flex flex-col'>
                 <p className='flex w-fit justify-center gap-1 p-1'>
-                  <span className='text-[#1e40af] font-semibold'>12</span> 
+                  <span className='text-[#1e40af] font-semibold'>12</span>
                   <span className='text-[#1e40af]'>cuotas</span>
-                  <span>de:</span> 
-                  <span className='text-[#1e40af] font-semibold'>{`$${(useFormatedPrice(parseFloat(product.price_list_6)/12))}`}</span>
+                  <span>de:</span>
+                  <span className='text-[#1e40af] font-semibold'>{`$${(useFormatedPrice(parseFloat(product.price_list_6) / 12))}`}</span>
                 </p>
 
-              </article>  
+              </article>
 
               <ul className="flex text-3xl max-[1500px]:ml-0 gap-x-4">
                 <img className='bg-gray-700 rounded-lg w-[45px] h-[30px]' src='https://technologyline.com.ar/banners-images/Assets/Some-icons/card-icon2.svg'/>
@@ -146,10 +147,17 @@ export default function ProductHeader({ product, loading }) {
             DISPONIBILIDAD: {handleStockQuantity()}
           </span>
           <button
-            onClick={()=> addProductToCart({ product })}
-            className='max-sm:hidden bg-page-blue-normal active:text-sm active:duration-0 hover:bg-page-lightblue rounded-xl flex items-center justify-center text-sm font-bold bg-gradient-to-l from-sky-400 to-sky-800 duration-300 border border-gray-300 text-white py-1 px-2 w-[90%] h-[50px] cart hover:brightness-125'
+            onClick={() => completeOrder({ product })}
+            className='max-sm:hidden bg-page-blue-normal active:text-sm active:duration-0 rounded-xl flex items-center justify-center text-sm font-bold bg-gradient-to-l from-sky-400 to-sky-800 duration-300 border border-gray-300 text-white py-1 px-2 w-[90%] h-[50px] cart hover:brightness-105'
           >
-            AGREGAR AL CARRITO
+            REALIZAR PEDIDO
+          </button>
+          <button
+            onClick={() => addProductToCart({ product })}
+            className='max-sm:hidden gap-3 bg-blue-200 active:text-sm active:duration-0 rounded-xl flex items-center justify-center text-sm font-bold duration-300 border border-gray-300 text-page-blue-normal py-1 px-2 w-[90%] h-[50px] cart hover:brightness-105'
+          >
+            <FaCartPlus className="text-xl max-sm:text-lg"/>
+            <span>AGREGAR AL CARRITO</span>
           </button>
         </div>
       </section>
