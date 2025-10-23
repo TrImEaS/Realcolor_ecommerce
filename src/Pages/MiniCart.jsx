@@ -1,26 +1,26 @@
-import { FaDotCircle, FaTimes, FaTimesCircle } from "react-icons/fa";
-import { useCart } from "../Context/CartContext";
-import { NavLink } from "react-router-dom";
-import useFormattedPrice from "../Utils/useFormattedPrice";
-import useCleanEan from "../Utils/useCleanEan";
+import { FaDotCircle, FaTimes, FaTimesCircle } from 'react-icons/fa'
+import { useCart } from '../Context/CartContext'
+import { NavLink } from 'react-router-dom'
+import useFormattedPrice from '../Utils/useFormattedPrice'
+import useCleanEan from '../Utils/useCleanEan'
 
-export default function MiniCart({ showCart, setShowCart }) {
+export default function MiniCart ({ showCart, setShowCart }) {
   const { cartProducts, getTotalOfProducts, deleteOneProductOfCart, addProductToCart, cleanCart } = useCart()
 
   return (
     <div className={`fixed top-0 z-[999999] right-0 w-[80%] max-sm:w-full min-h-[100%] cart flex flex-col max-w-[500px] overflow-y-auto gap-5 p-3 bg-gray-100 border-2 text-gray-800 ${showCart === 3 && 'hidden'} ${showCart ? 'show' : 'hide'}`}>
-      <button onClick={()=> setShowCart(0)}>
+      <button onClick={() => setShowCart(0)}>
         <FaTimesCircle className="text-xl text-sky-700"/>
       </button>
 
       <section className="w-full">
-        {getTotalOfProducts() === 0 
+        {getTotalOfProducts() === 0
           ? (
             <article className="flex w-full flex-col justify-center items-center text-center">
               <h3 className="font-bold">Tu carrito está vacío</h3>
               <span>Aún no agregaste productos al carrito.</span>
             </article>
-          )
+            )
           : (
             <article className="flex flex-col gap-3 w-full justify-center border-b-2 pb-4 border-gray-200 items-center">
               <h3 className="font-bold border-b-2 border-sky-700 px-3 tracking-wider text-sky-700">
@@ -28,9 +28,9 @@ export default function MiniCart({ showCart, setShowCart }) {
               </h3>
 
               <div className="flex justify-around items-center w-full px-5">
-                <NavLink to='/cart' onClick={()=> setShowCart(0)} className='group flex flex-col'>
+                <NavLink to='/cart' onClick={() => setShowCart(0)} className='group flex flex-col'>
                   <p className="flex items-center gap-x-1 text-sky-700">
-                    <FaDotCircle className="text-sm"/> 
+                    <FaDotCircle className="text-sm"/>
                     <span>Ir a mi carrito</span>
                   </p>
                   <span className="group-hover:w-full h-[1.5px] w-0 bg-sky-500 duration-300 text-sky-700"></span>
@@ -38,17 +38,17 @@ export default function MiniCart({ showCart, setShowCart }) {
 
                 <button onClick={() => cleanCart()} className="group flex flex-col">
                   <p className="flex items-center gap-x-1 text-sky-700">
-                    <FaDotCircle className="text-sm"/> 
+                    <FaDotCircle className="text-sm"/>
                     <span>Vaciar carrito</span>
                   </p>
                   <span className="group-hover:w-full h-[1.5px] w-0 bg-sky-500 duration-300"></span>
                 </button>
               </div>
             </article>
-          )
+            )
         }
       </section>
-      
+
       <section className="px-5 overflow-y-auto h-[26rem] flex flex-col gap-5">
         {getTotalOfProducts() > 0 &&
           cartProducts.map(product => (
@@ -58,16 +58,16 @@ export default function MiniCart({ showCart, setShowCart }) {
               </header>
 
               <aside className="w-[60%] min-h-[100px] flex flex-col text-xs gap-y-2 justify-between">
-                <NavLink onClick={()=> setShowCart(0)} className='flex flex-col hover:text-sky-700 transition-colors duration-300'  to={`/products?product=${product.sku}`}>
+                <NavLink onClick={() => setShowCart(0)} className='flex flex-col hover:text-sky-700 transition-colors duration-300' to={`/products?product=${product.sku}`}>
                   <span className="uppercase font-bold text-page-blue-normal">{product.brand}</span>
                   <span className="truncate whitespace-normal font-medium">{useCleanEan(product.name)}</span>
                   <span className="pt-1 font-bold text-gray-700">Precio Lista - <span className="text-green-600">${useFormattedPrice(product.price_list_1)}</span></span>
-                </NavLink> 
+                </NavLink>
 
                 <div className="w-full flex justify-center text-white items-center mt-1">
-                  <button onClick={()=> deleteOneProductOfCart({ productID: product.id })} className="w-8 h-7 bg-gradient-to-r from-sky-600 to-sky-700 rounded-l-md flex justify-center items-center border-0 hover:from-sky-700 hover:to-sky-500 transition-all duration-300 font-bold">-</button>
+                  <button onClick={() => deleteOneProductOfCart({ productID: product.id })} className="w-8 h-7 bg-gradient-to-r from-sky-600 to-sky-700 rounded-l-md flex justify-center items-center border-0 hover:from-sky-700 hover:to-sky-500 transition-all duration-300 font-bold">-</button>
                   <span className="min-w-8 min-h-7 bg-sky-600 flex justify-center items-center border-x-0 px-2 font-medium">{product.quantity_selected}</span>
-                  <button onClick={()=> addProductToCart({ product })} className="w-8 h-7 bg-gradient-to-r from-sky-700 to-sky-600 rounded-r-md flex justify-center items-center border-0 hover:from-sky-500 hover:to-sky-700 transition-all duration-300 font-bold">+</button>
+                  <button onClick={() => addProductToCart({ product })} className="w-8 h-7 bg-gradient-to-r from-sky-700 to-sky-600 rounded-r-md flex justify-center items-center border-0 hover:from-sky-500 hover:to-sky-700 transition-all duration-300 font-bold">+</button>
                 </div>
               </aside>
             </article>
@@ -76,7 +76,7 @@ export default function MiniCart({ showCart, setShowCart }) {
 
         {getTotalOfProducts() > 0 &&
           <NavLink
-            to="/cart" 
+            to="/cart"
             onClick={() => setShowCart(0)}
             className="bg-gradient-to-r from-sky-700 to-blue-600 fixed bottom-5 w-[90%] z-[10000] hover:from-sky-600 hover:to-blue-700 hover:scale-[1.02] text-white py-4 px-6 rounded-lg text-center font-bold tracking-wide transition-all duration-300 flex items-center justify-center gap-3 shadow-md"
           >
