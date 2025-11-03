@@ -65,7 +65,7 @@ export default function Cart () {
       'subsistemas@real-color.com.ar',
       'revendedores@realcolor.com.ar',
       'mercadolibre4@real-color.com.ar',
-      'pcamio@real-color.com.ar'
+      'p.camio@real-color.com.ar'
     ]
 
     if (!clientData?.email) {
