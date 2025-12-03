@@ -18,7 +18,7 @@ export default function Nav () {
   const [timeLeft, setTimeLeft] = useState({ days: '00', hours: '00', minutes: '00', seconds: '00', expired: false })
 
   useEffect(() => {
-    const target = new Date('2025-11-21T00:00:00')
+    const target = new Date('2025-11-26T00:00:00')
     let timerId = null
 
     const update = () => {

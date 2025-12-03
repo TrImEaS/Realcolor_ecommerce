@@ -15,7 +15,8 @@ export default function ProductCard ({ product }) {
   }
 
   return (
-    <div className={`${product.brand.toLowerCase() === 'drean' ? 'dropshadow-cyan border-cyan-500' : 'border-gray-200'} flex flex-col h-[420px] max-sm:w-[98%] w-[270px] max-md:max-w-[100%] sm:my-4 mx-auto rounded-3xl border  bg-white shadow-sm hover:shadow-lg duration-300 overflow-hidden group`}>
+    // <div className={`${product.brand.toLowerCase() === 'drean' ? 'dropshadow-cyan border-cyan-500' : 'border-gray-200'} flex flex-col h-[420px] max-sm:w-[98%] w-[270px] max-md:max-w-[100%] sm:my-4 mx-auto rounded-3xl border  bg-white shadow-sm hover:shadow-lg duration-300 overflow-hidden group`}>
+    <div className={'flex flex-col h-[420px] max-sm:w-[98%] w-[270px] max-md:max-w-[100%] sm:my-4 mx-auto rounded-3xl border  bg-white shadow-sm hover:shadow-lg duration-300 overflow-hidden group'}>
       <NavLink
         to={`/products/?product=${product.sku}`}
         onClick={addViewToProduct}
@@ -27,12 +28,12 @@ export default function ProductCard ({ product }) {
             src={product.img_url || 'https://technologyline.com.ar/banners-images/Assets/page-icon.jpeg'}
             alt={product.name}
             className="w-full h-full max-h-[250px] object-contain transition-transform duration-500 group-hover:scale-105"
-            onError={(e) => { e.target.src = 'https://technologyline.com.ar/banners-images/Assets/page-icon.jpeg' }}
+            onError={(e) => { e.target.src = 'https://real-color.com.ar/banners-images/Assets/page_icon.webp' }}
           />
 
-          { product.brand.toLowerCase() === 'drean' &&
+          {/* { product.brand.toLowerCase() === 'drean' &&
             <img src='https://technologyline.com.ar/banners-images/Assets/DREAN_WEEK.svg' className='absolute h-7 top-3 left-3'/>
-          }
+          } */}
           {/* <img src='https://technologyline.com.ar/banners-images/Assets/cyber2025.webp' className='absolute h-12 top-1 right-0.5'/> */}
         </header>
 
