@@ -98,7 +98,7 @@ export default function Cart () {
         movimiento_numero: orderMovement,
         client_email: clientData.email,
         company: 'Real Color SRL',
-        footer_img: 'https://real-color.com.ar/banners-images/Assets/logo_azul.svg',
+        footer_img: 'https://real-color.com.ar/banners-images/Assets/logo_azulNew.svg',
         datos_cliente: {
           nombre_completo: clientData.fullname,
           dni: clientData.dni,

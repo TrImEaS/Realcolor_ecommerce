@@ -64,7 +64,9 @@ export default function Nav () {
   return (
     <nav className='z-50 flex flex-col w-full relative items-center'>
       {/* <HotSale/> */}
-      <section className='flex z-50 h-8 text-center max-sm:h-10 gap-2 px-3 max-sm:gap-1 max-sm:px-5 cursor-pointer bg-[#111] w-full items-center text-slate-100 justify-center text-[14px] max-sm:text-[12px]'>
+
+      {/* BlackFriday */}
+      {/* <section className='flex z-50 h-8 text-center max-sm:h-10 gap-2 px-3 max-sm:gap-1 max-sm:px-5 cursor-pointer bg-[#111] w-full items-center text-slate-100 justify-center text-[14px] max-sm:text-[12px]'>
         {
         timeLeft.expired
           ? (
@@ -76,8 +78,8 @@ export default function Nav () {
               </span>
             )
         }
-      </section>
-            <NavLink to='/shipments' className='flex z-50 h-8 text-center max-sm:h-10 gap-2 px-3 max-sm:gap-1 max-sm:px-5 cursor-pointer bg-slate-200 w-full items-center text-slate-900 justify-center text-[14px] max-sm:text-[12px]'>
+      </section> */}
+      <NavLink to='/shipments' className='flex z-50 h-8 text-center max-sm:h-10 gap-2 px-3 max-sm:gap-1 max-sm:px-5 cursor-pointer bg-slate-200 w-full items-center text-slate-900 justify-center text-[14px] max-sm:text-[12px]'>
         <FaArrowUp className='text-[10px] mt-1 animate-bounce'/>
         <span className='select-none font-medium duration-300'>Envios a todo el pais con precio promocional a las siguientes localidades</span>
         <FaArrowUp className='text-[10px] mt-1 animate-bounce'/>
@@ -85,7 +87,7 @@ export default function Nav () {
 
       <section className='flex gap-x-5 max-sm:gap-x-2 max-sm:max-h-[100px] justify-between items-center h-28 w-3/4 max-lg:w-full px-2 max-sm:px-0'>
         <NavLink to='/' className='h-[100px] min-w-[200px] max-sm:w-[180px] flex items-center max-xl:justify-center'>
-          <img src="https://real-color.com.ar/banners-images/Assets/logo_azul.svg" alt="company-logo" className='max-sm:w-[90%] w-full max-sm:max-w-[200px] max-w-[200px] pb-3'/>
+          <img src="https://real-color.com.ar/banners-images/Assets/logo_azulNew.svg" alt="company-logo" className='max-sm:w-[90%] w-full max-sm:max-w-[200px] max-w-[200px] pb-3'/>
         </NavLink>
 
         {/* Search input */}
