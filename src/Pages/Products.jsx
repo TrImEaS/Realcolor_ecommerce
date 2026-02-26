@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react'
+/* global location */
+import { useState, useEffect } from 'react'
 import { useProducts } from '../Context/ProductsContext.jsx'
 import { NavLink, useNavigate } from 'react-router-dom'
 import ProductsCarousel from '../Components/ProductsCarousel.jsx'
+import ProductHeader from '../Components/Products/ProductHeader.jsx'
 import Spinner from '../Components/Products/Spinner.jsx'
 import DOMPurify from 'dompurify'
 import axios from 'axios'
 import { useCart } from '../Context/CartContext.jsx'
-import ProductHeader from '../Components/Products/ProductHeader.jsx'
 import { FaCartPlus } from 'react-icons/fa'
 
-const API_URL = import.meta.env.MODE === 'production' ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV
+const API_URL = import.meta.env.MODE === 'production'
+  ? import.meta.env.VITE_API_URL_PROD
+  : import.meta.env.VITE_API_URL_DEV
 
 export default function Products () {
   const { products } = useProducts()
@@ -89,23 +92,23 @@ export default function Products () {
 
       <ProductHeader product={product} loading={loading}/>
 
-      <div className='flex flex-col max-sm:w-full w-[95%] bg-color rounded-lg border shadow-lg'>
+      <div className='flex flex-col max-sm:w-full w-[95%] bg-blue-400 rounded-lg border shadow-lg'>
         <div className='flex p-2 gap-x-6'>
           <span
             onClick={() => setDescriptionMenu('desc')}
-            className={`${descriptionMenu === 'desc' ? 'text-black bg-white' : 'text-white bg-white/30 hover:text-black hover:bg-white'} uppercase font-bold rounded-xl px-2 py-1 duration-300 cursor-pointer`}>
+            className={`${descriptionMenu === 'desc' ? 'border-white' : 'border-white/20'} uppercase  font-bold border-b-4 text-white hover:border-white px-2 pt-1 duration-300 cursor-pointer`}>
             Descripción
           </span>
           <span className='py-1 text-white'>|</span>
           <span
             onClick={() => setDescriptionMenu('spec')}
-            className={`${descriptionMenu === 'spec' ? 'text-black bg-white' : 'text-white bg-white/30 hover:text-black hover:bg-white'} uppercase font-bold  rounded-xl px-2 py-1 duration-300 cursor-pointer`}>
+            className={`${descriptionMenu === 'spec' ? 'border-white' : 'border-white/20'} uppercase  font-bold border-b-4 text-white hover:border-white px-2 pt-1 duration-300 cursor-pointer`}>
             Especificaciones
           </span>
           <span className='py-1 text-white'>|</span>
           <span
             onClick={() => setDescriptionMenu('faq')}
-            className={`${descriptionMenu === 'faq' ? 'text-black bg-white' : 'text-white bg-white/30 hover:text-black hover:bg-white'} uppercase font-bold  rounded-xl px-2 py-1 duration-300 cursor-pointer`}>
+            className={`${descriptionMenu === 'faq' ? 'border-white' : 'border-white/20'} uppercase  font-bold border-b-4 text-white hover:border-white px-2 pt-1 duration-300 cursor-pointer`}>
             FAQ
           </span>
         </div>
@@ -113,20 +116,20 @@ export default function Products () {
           {
             descriptionMenu === 'desc'
               ? (
-                <section className='flex flex-col px-4 py-2'>
-                  <article dangerouslySetInnerHTML={{ __html: product.descriptions ? DOMPurify.sanitize(manipulateHTML(product.descriptions)) : 'Este articulo no posee descripciones.' }} />
-                </section>
+              <section className='flex flex-col px-4 py-2'>
+                <article dangerouslySetInnerHTML={{ __html: product.descriptions ? DOMPurify.sanitize(manipulateHTML(product.descriptions)) : 'Este articulo no posee descripciones.' }} />
+              </section>
                 )
               : descriptionMenu === 'spec'
                 ? (
-                  <section className='flex flex-col px-4 py-2'>
-                    <article dangerouslySetInnerHTML={{ __html: product.specifications ? DOMPurify.sanitize(manipulateHTML(product.specifications)) : 'Este articulo no posee descripciones.' }} />
-                  </section>
+              <section className='flex flex-col px-4 py-2'>
+                <article dangerouslySetInnerHTML={{ __html: product.specifications ? DOMPurify.sanitize(manipulateHTML(product.specifications)) : 'Este articulo no posee descripciones.' }} />
+              </section>
                   )
                 : (
-                  <section className='flex flex-col px-4 py-2'>
-                    <article dangerouslySetInnerHTML={{ __html: product.faq || '' ? DOMPurify.sanitize(manipulateHTML(product.faq || '')) : 'Este articulo no posee preguntas frecuentes.' }} />
-                  </section>
+              <section className='flex flex-col px-4 py-2'>
+                <article dangerouslySetInnerHTML={{ __html: product.faq ? DOMPurify.sanitize(manipulateHTML(product.faq)) : 'Este articulo no posee preguntas frecuentes.' }} />
+              </section>
                   )
           }
         </div>
@@ -134,10 +137,11 @@ export default function Products () {
 
       <section className='flex flex-col gap-y-10 pt-10 w-full max-sm:w-[95%]'>
         { recomendProducts.length > 0 &&
-          <div className='w-full flex flex-col items-center gap-y-10'>
-            <span className='text-3xl font-bold max-sm:text-2xl sm:pl-8 tracking-tight whitespace-nowrap'>
+          <div className='w-full flex flex-col gap-y-10'>
+            <span className='text-3xl font-bold max-sm:text-2xl tracking-tight sm:pl-8 whitespace-nowrap'>
               Tambien te recomendamos
             </span>
+
             <div className='w-full'>
               <ProductsCarousel rows={1} filterProducts={recomendProducts}/>
             </div>

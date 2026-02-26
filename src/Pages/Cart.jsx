@@ -1,23 +1,24 @@
 import { useEffect, useState } from 'react'
 import { useCart } from '../Context/CartContext'
-import { FaInfoCircle, FaShippingFast, FaTrash } from 'react-icons/fa'
+import { FaExclamationTriangle, FaInfoCircle, FaShippingFast, FaTrash } from 'react-icons/fa'
 import { NavLink, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { useAuth } from '../Context/AuthContext'
-import useDocumentTitle from '../Utils/useDocumentTitle'
-import useCleanEan from '../Utils/useCleanEan'
 import useFormattedPrice from '../Utils/useFormattedPrice'
-
+import useDocumentTitle from '../Utils/useDocumentTitle'
 const API_URL = import.meta.env.MODE === 'production' ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV
 
 export default function Cart () {
-  const { userData, userIsLoged } = useAuth()
+  const { userData, userIsLoged, CPValues, calculateShipping } = useAuth()
   const { cartProducts, getTotalOfProducts, deleteOneProductOfCart, addProductToCart, deleteProductOfCart, cleanCart } = useCart()
   const [price, setPrice] = useState(1)
   const [address, setAddress] = useState('')
   const [postalCode, setPostalCode] = useState('')
   const [shipment, setShipment] = useState(0)
+  const [shippingResult, setShippingResult] = useState(null)
+  const [loadingShipping, setLoadingShipping] = useState(false)
+  const [notFound, setNotFound] = useState(false)
   const [clientData, setClientData] = useState({
     fullname: '',
     dni: '',
@@ -27,11 +28,67 @@ export default function Cart () {
     postalCode: '',
     phone: ''
   })
+
   const navigate = useNavigate()
 
-  useDocumentTitle('Mi carrito')
+  useDocumentTitle('Carrito de compras')
 
-  const totalPrice = cartProducts.reduce((acc, p) => acc + (parseFloat(p[`price_list_${price}`]) * +p.quantity_selected), 0)
+  // 1. Calculamos el volumen total
+  const totalVolume = cartProducts.reduce((acc, p) => acc + (parseFloat(p.volume || 0) * +p.quantity_selected), 0);
+
+  // 2. Verificamos si hay algún producto con volumen 0 o no definido
+  const hasMissingVolume = cartProducts.some(p => !p.volume || parseFloat(p.volume) === 0);
+
+  // 3. Recargo del 2% solo si elige cuotas
+  const shippingSurcharge = [3, 4, 5, 6].includes(price) ? 1.02 : 1.0;
+
+  // 4. Valores finales para el total
+  const finalShippingValue = shippingResult ? (shippingResult.total * shippingSurcharge) : 0;
+  const subtotalProducts = cartProducts.reduce((acc, p) => acc + (parseFloat(p[`price_list_${price}`]) * +p.quantity_selected), 0);
+  const totalPrice = subtotalProducts + finalShippingValue;
+
+  // const totalPrice = cartProducts.reduce((acc, p) => acc + (parseFloat(p[`price_list_${price}`]) * +p.quantity_selected), 0)
+
+  useEffect(() => {
+    if (hasMissingVolume) {
+      setShippingResult(null);
+      setLoadingShipping(false);
+      return;
+    }
+
+    // Solo calculamos si la opción es 1 (Factura) o 2 (Domicilio)
+    if (shipment === 1 || shipment === 2) {
+      const cpToCalculate = shipment === 1 ? clientData.postalCode : postalCode
+      
+      if (!cpToCalculate || cpToCalculate.length < 4) {
+        setShippingResult(null)
+        return
+      }
+
+      setLoadingShipping(true)
+      setNotFound(false)
+
+      const delayDebounceFn = setTimeout(() => {
+        // Usamos el totalVolume calculado arriba
+        const result = calculateShipping(totalVolume, cpToCalculate, CPValues)
+
+        if (result) {
+          setShippingResult(result)
+          setNotFound(false)
+        } else {
+          setShippingResult(null)
+          setNotFound(cpToCalculate.length >= 4)
+        }
+        setLoadingShipping(false)
+      }, 800)
+
+      return () => clearTimeout(delayDebounceFn)
+    } else {
+      // Si retira en local o no eligió nada, limpiamos
+      setShippingResult(null)
+      setNotFound(false)
+    }
+  }, [shipment, postalCode, clientData.postalCode, totalVolume, CPValues])
 
   useEffect(() => {
     if (userData.email) {
@@ -46,6 +103,27 @@ export default function Cart () {
       })
     }
   }, [userData])
+
+  useEffect(() => {
+    if (!userIsLoged) {
+      const redirectToLogin = async () => {
+        const result = await Swal.fire({
+          title: 'Atención',
+          text: 'Para poder ver carrito y finalizar el pedido debes iniciar sesión.',
+          icon: 'warning',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          confirmButtonText: 'Iniciar sesión',
+          customClass: {
+            confirmButton: 'bg-page-blue-normal text-white px-4 py-2 rounded hover:opacity-90'
+          }
+        })
+        if (result.isConfirmed) navigate('/login')
+      }
+
+      redirectToLogin()
+    }
+  }, [userIsLoged])
 
   useEffect(() => {
     if (shipment === 1) {
@@ -93,16 +171,16 @@ export default function Cart () {
       if (orderMovementRes.status !== 200) { throw new Error('Error obteniendo número de orden') }
 
       const orderMovement = orderMovementRes.data.movement.toString().padStart(8, '0')
-
       const datos_de_orden = {
         movimiento_numero: orderMovement,
-        client_email: clientData.email,
-        company: 'Real Color SRL',
-        footer_img: 'https://real-color.com.ar/banners-images/Assets/logo_azulNew.svg',
+        client_email: userData.email,
+        company: 'Technology line',
+        footer_img: 'https://technologyline.com.ar/banners-images/Assets/logo-tlineNew.svg',
         datos_cliente: {
           nombre_completo: clientData.fullname,
           dni: clientData.dni,
-          direccion: `${clientData.address} - ${clientData.location}`,
+          direccion: clientData.address,
+          location: clientData.location,
           cp: clientData.postalCode,
           celular: clientData.phone,
           email: clientData.email
@@ -204,18 +282,18 @@ export default function Cart () {
 
                 <NavLink to={`/products?product=${p.sku}`} className="flex flex-col justify-center items-center gap-2">
                   <span className="uppercase text-page-blue-normal font-bold">{p.brand}</span>
-                  <span className="text-center tracking-wide px-5 font-medium text-gray-800 text-sm">{useCleanEan(p.name)}</span>
+                  <span className="text-center tracking-wide px-5 font-medium text-gray-800 text-sm">{p.name.replace(/EAN(?::\s*|\s+)\d{5,}/gi, '')}</span>
                 </NavLink>
 
                 <section className="w-full flex justify-center text-white items-center mt-1">
-                  <button onClick={() => deleteOneProductOfCart({ productID: p.id })} className="w-8 h-7 bg-gradient-to-r from-sky-600 to-sky-700 rounded-l-md flex justify-center items-center border-0 hover:from-sky-700 hover:to-sky-500 transition-all duration-300 font-bold">-</button>
-                  <span className="min-w-8 min-h-7 bg-sky-600 flex justify-center items-center border-x-0 px-2 font-medium">{p.quantity_selected}</span>
-                  <button onClick={() => addProductToCart({ product: p })} className="w-8 h-7 bg-gradient-to-r from-sky-700 to-sky-600 rounded-r-md flex justify-center items-center border-0 hover:from-sky-500 hover:to-sky-700 transition-all duration-300 font-bold">+</button>
+                  <button onClick={() => deleteOneProductOfCart({ productID: p.id })} className="w-8 h-7 bg-gradient-to-r from-sky-500 to-sky-600 rounded-l-md flex justify-center items-center border-0 hover:from-sky-600 hover:to-sky-700 transition-all duration-300 font-bold">-</button>
+                  <span className="min-w-8 min-h-7 bg-sky-500 flex justify-center items-center border-x-0 px-2 font-medium">{p.quantity_selected}</span>
+                  <button onClick={() => addProductToCart({ product: p })} className="w-8 h-7 bg-gradient-to-r from-sky-600 to-sky-500 rounded-r-md flex justify-center items-center border-0 hover:from-sky-700 hover:to-sky-600 transition-all duration-300 font-bold">+</button>
                 </section>
 
                 <button
                   className="absolute top-2 right-2 hover:text-red-500 duration-300"
-                  onClick={() => deleteOneProductOfCart({ productID: p.id, quantity: 9999999999 })}
+                  onClick={() => deleteOneProductOfCart({ productID: p.id, quantity: 99999999999 })}
                 >
                   <FaTrash/>
                 </button>
@@ -233,7 +311,7 @@ export default function Cart () {
                 <input
                   type="text"
                   id="Nombre completo"
-                  value={clientData.fullname}
+                  value={clientData.fullname || ''}
                   onChange={(e) => setClientData(prev => ({ ...prev, fullname: e.target.value }))}
                   className="peer bg-transparent border-transparent w-full placeholder-transparent h-14 px-3 focus:ring-0 placeholder:text-xs outline-none"
                   placeholder="Nombre completo"
@@ -248,7 +326,7 @@ export default function Cart () {
                 <input
                   type="text"
                   id="DNI"
-                  value={clientData.dni}
+                  value={clientData.dni || ''}
                   onChange={(e) => setClientData(prev => ({ ...prev, dni: e.target.value }))}
                   className="peer bg-transparent border-transparent w-full placeholder-transparent h-14 px-3 focus:ring-0 placeholder:text-xs outline-none"
                   placeholder="DNI"
@@ -263,10 +341,10 @@ export default function Cart () {
                 <input
                   type="text"
                   id="Address"
-                  value={clientData.address}
+                  value={clientData.address || ''}
                   onChange={(e) => setClientData(prev => ({ ...prev, address: e.target.value }))}
                   className="peer bg-transparent border-transparent w-full placeholder-transparent h-14 px-3 focus:ring-0 placeholder:text-xs outline-none"
-                  placeholder="Direccion"
+                  placeholder="Address"
                 />
 
                 <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
@@ -278,7 +356,7 @@ export default function Cart () {
                 <input
                   type="text"
                   id="Location"
-                  value={clientData.location}
+                  value={clientData.location || ''}
                   onChange={(e) => setClientData(prev => ({ ...prev, location: e.target.value }))}
                   className="peer bg-transparent border-transparent w-full placeholder-transparent h-14 px-3 focus:ring-0 placeholder:text-xs outline-none"
                   placeholder="Localidad"
@@ -293,7 +371,7 @@ export default function Cart () {
                 <input
                   type="text"
                   id="CodigoPostal"
-                  value={clientData.postalCode}
+                  value={clientData.postalCode || ''}
                   onChange={(e) => setClientData(prev => ({ ...prev, postalCode: e.target.value }))}
                   className="peer bg-transparent border-transparent w-full placeholder-transparent h-14 px-3 focus:ring-0 placeholder:text-xs outline-none"
                   placeholder="CodigoPostal"
@@ -308,13 +386,13 @@ export default function Cart () {
                 <input
                   type="text"
                   id="Phone"
-                  value={clientData.phone}
+                  value={clientData.phone || ''}
                   onChange={(e) => setClientData(prev => ({ ...prev, phone: e.target.value }))}
                   className="peer bg-transparent border-transparent w-full placeholder-transparent h-14 px-3 focus:ring-0 placeholder:text-xs outline-none"
                   placeholder="Phone"
                 />
 
-                <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-400 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
+                <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
                   Celular <b>*</b>
                 </span>
               </label>
@@ -400,71 +478,104 @@ export default function Cart () {
               </div>
             </fieldset>
 
-            {
-              shipment === 1
-                ? (
-                <p className="flex pt-1 items-center gap-2">
-                  <b className="bg-yellow-400 rounded-full mb-[1px] text-white border-yellow-400 border-2 text-lg"><FaInfoCircle/></b>
-                  <span className="text-sm text-gray-700 tracking-wider"> El envio sera cotizado y compartido con usted una vez concretado el pedido</span>
-                </p>
-                  )
-                : shipment === 2
-                  ? (
-                <div className="pt-3 flex flex-col gap-3">
-                  <p className="flex pt-1 items-center gap-2">
-                    <b className="bg-yellow-400 rounded-full mb-[1px] text-white border-yellow-400 border-2 text-lg"><FaInfoCircle/></b>
-                    <span className="text-sm text-gray-700 tracking-wider"> El envio sera cotizado y compartido con usted una vez concretado el pedido</span>
-                  </p>
+            {shipment === 1 || shipment === 2 ? (
+              <div className='mt-4 max-w-[400px] space-y-3'>
+                {shipment === 2 && (
+                  <div className="flex flex-col gap-3">
+                    <label htmlFor="Codigo postal" className="relative flex rounded-md items-center px-2 max-w-[580px] border border-gray-200 shadow-xs focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
+                      <input
+                        type="number"
+                        id="Codigo postal"
+                        value={postalCode}
+                        onKeyDown={(e) => ['.', ',', '-', 'e'].includes(e.key) && e.preventDefault()}
+                        onChange={(e) => setPostalCode(e.target.value)}
+                        className="peer bg-transparent border-transparent w-full h-14 px-3 outline-none"
+                        placeholder="Codigo postal"
+                      />
+                      <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
+                        Codigo postal de envío <b>*</b>
+                      </span>
+                      <FaShippingFast className="text-2xl text-page-blue-normal"/>
+                    </label>
 
-                  <label htmlFor="Codigo postal" className="relative flex rounded-md items-center px-2 max-w-[580px] border border-gray-200 shadow-xs focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
-                    <input
-                      type="text"
-                      id="Codigo postal"
-                      value={postalCode}
-                      onChange={(e) => setPostalCode(e.target.value)}
-                      className="peer bg-transparent border-transparent w-full placeholder-transparent h-14 px-3 focus:ring-0 placeholder:text-xs outline-none"
-                      placeholder="Codigo postal"
-                    />
+                    <label htmlFor="Direccion" className="relative flex rounded-md items-center px-2 max-w-[580px] border border-gray-200 shadow-xs focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
+                      <input
+                        type="text"
+                        id="Direccion"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        className="peer bg-transparent border-transparent w-full h-14 px-3 outline-none"
+                        placeholder="Direccion"
+                      />
+                      <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
+                        Direccion de entrega <b>*</b>
+                      </span>
+                    </label>
+                  </div>
+                )}
 
-                    <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-                      Codigo postal
-                    </span>
-
-                    <FaShippingFast className="text-2xl"/>
-                  </label>
-
-                  <label htmlFor="Direccion" className="relative flex rounded-md items-center px-2 max-w-[580px] border border-gray-200 shadow-xs focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
-                    <input
-                      type="text"
-                      id="Direccion"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      className="peer bg-transparent border-transparent w-full placeholder-transparent h-14 px-3 focus:ring-0 placeholder:text-xs outline-none"
-                      placeholder="Direccion"
-                    />
-
-                    <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-                      Direccion <b>*</b>
-                    </span>
-                  </label>
+                {/* VISUALIZACIÓN DEL RESULTADO DEL ENVÍO */}
+                <div className='bg-slate-50 border border-slate-200 rounded-xl overflow-hidden shadow-sm'>
+                  <div className='p-4 min-h-[80px] flex items-center justify-center'>
+                    {loadingShipping ? (
+                      <div className='flex flex-col items-center gap-2'>
+                        <span className='text-[10px] text-slate-400 animate-pulse'>Calculando costo de envío...</span>
+                      </div>
+                    ) : hasMissingVolume ? (
+                      /* CASO: PRODUCTO SIN VOLUMEN CARGADO */
+                      <div className='flex flex-col items-center gap-2 bg-amber-50 p-3 rounded-lg w-full border border-amber-100'>
+                        <p className='text-xs font-bold text-amber-700 text-center uppercase tracking-tighter leading-tight'>
+                          No podemos calcular el costo de envío automáticamente
+                        </p>
+                        <a 
+                          href="https://wa.me/5491131019901" 
+                          target="_blank" 
+                          rel="noreferrer"
+                          className='text-[11px] bg-green-500 text-white px-4 py-1.5 rounded-full font-bold hover:bg-green-600 transition-colors shadow-sm'
+                        >
+                          CONSULTA POR WPP
+                        </a>
+                      </div>
+                    ) : notFound ? (
+                      <div className='flex items-center gap-3 bg-red-50 p-3 rounded-lg w-full border border-red-100'>
+                        <FaExclamationTriangle className='text-red-400 text-xl' />
+                        <div>
+                          <p className='text-xs font-bold text-red-700'>Lo sentimos, no llegamos a tu zona.</p>
+                          <p className='text-[10px] text-red-500'>Probá con otro código postal cercano.</p>
+                        </div>
+                      </div>
+                    ) : shippingResult ? (
+                      <div className='w-full flex flex-col gap-1'>
+                        <div className='flex justify-between items-center'>
+                          <div className='flex flex-col'>
+                            <span className='text-xs text-slate-500 uppercase font-bold tracking-tighter'>Costo de Envío:</span>
+                          </div>
+                          <span className='text-lg font-black text-page-blue-normal'>
+                            ${(shippingResult.total * shippingSurcharge).toLocaleString('es-AR', { minimumFractionDigits: 2 })}
+                          </span>
+                        </div>
+                        <p className='text-[12px] text-slate-500'>
+                          Entrega estimada: <b>{shippingResult.time} días hábiles</b> a CP {shipment === 1 ? clientData.postalCode : postalCode}.
+                        </p>
+                      </div>
+                    ) : (
+                      <p className='text-xs text-slate-400 italic'>Ingresá un CP para cotizar el envío.</p>
+                    )}
+                  </div>
                 </div>
-                    )
-                  : shipment === 3
-                    ? (
-                <article className="flex tracking-tight flex-col gap-3 pt-3">
-                  <p className="flex flex-col text-gray-800">
-                    <span><b>(*) Direccion:</b> Roma 560 (unidad 8), Versalles, Liniers</span>
-                    <span><b>(*) Horarios:</b> Lunes a viernes de 09:00 a 18:00hs</span>
-                  </p>
-
-                  <p className="flex items-center gap-2">
-                    <b className="bg-yellow-400 rounded-full text-white border-yellow-400 border-2 text-lg"><FaInfoCircle/></b>
-                    <span className="text-[14px] text-gray-700 tracking-wider">(La fecha y horario para retirar se debe acordar con el vendedor)</span>
-                  </p>
-                </article>
-                      )
-                    : ''
-            }
+              </div>
+            ) : shipment === 3 ? (
+              <article className="flex tracking-tight flex-col gap-3 pt-3">
+                <p className="flex flex-col text-gray-800 text-sm">
+                  <span><b>(*) Direccion:</b> Roma 560 (unidad 8), Versalles, Liniers</span>
+                  <span><b>(*) Horarios:</b> Lunes a viernes de 09:00 a 18:00hs</span>
+                </p>
+                <div className='flex items-center gap-2 bg-blue-50 p-2 rounded'>
+                  <FaInfoCircle className='text-page-blue-normal'/>
+                  <span className="text-[12px] text-gray-700 tracking-wider">Sin costo adicional por retiro.</span>
+                </div>
+              </article>
+            ) : null}
           </section>
 
           <section className="flex flex-col rounded-lg border gap-3 shadow-lg p-5 max-sm:w-[90%] w-[80%]">
