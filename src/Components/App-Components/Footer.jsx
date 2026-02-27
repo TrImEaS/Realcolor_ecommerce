@@ -3,10 +3,106 @@ import { NavLink } from 'react-router-dom'
 import { FaInstagram, FaAngleUp } from 'react-icons/fa'
 import { useState } from 'react'
 import Swal from 'sweetalert2'
+import axios from 'axios'
 const API_URL = import.meta.env.MODE === 'production' ? import.meta.env.VITE_API_URL_PROD : import.meta.env.VITE_API_URL_DEV
 
 export default function Footer () {
   const [email, setEmail] = useState('')
+
+  const handleArrepentimiento = async () => {
+    const company = 'Real Color SRL'
+    const { value: formValues } = await Swal.fire({
+      title: '<strong>Botón de Arrepentimiento</strong>',
+      icon: 'info',
+      html:
+        '<p style="font-size: 0.95rem; margin-bottom: 20px; color: #555; text-align: left;">' +
+        'De acuerdo a la Ley 24.240, tienes 10 días corridos para revocar tu compra/pedido desde la recepción del producto o celebración del contrato.' +
+        '</p>' +
+        '<div style="text-align: left; display: flex; flex-direction: column; gap: 10px;">' +
+          '<div><label style="font-weight:bold; display:block; margin-bottom:5px;">Nombre Completo *</label>' +
+          '<input id="swal-input1" class="swal2-input" placeholder="Juan Perez" style="margin:0; width:90%;"></div>' +
+          
+          '<div><label style="font-weight:bold; display:block; margin-bottom:5px;">DNI *</label>' +
+          '<input id="swal-input-dni" class="swal2-input" placeholder="12345678" style="margin:0; width:90%;"></div>' +
+          
+          '<div><label style="font-weight:bold; display:block; margin-bottom:5px;">Número de pedido (Opcional)</label>' +
+          '<input id="swal-input2" class="swal2-input" placeholder="ej: 1234" style="margin:0; width:90%;"></div>' +
+          
+          '<div><label style="font-weight:bold; display:block; margin-bottom:5px;">Email de contacto *</label>' +
+          '<input id="swal-input3" class="swal2-input" placeholder="juan@email.com" type="email" style="margin:0; width:90%;"></div>' +
+          
+          '<div><label style="font-weight:bold; display:block; margin-bottom:5px;">Comentarios (Opcional)</label>' +
+          '<textarea id="swal-input4" class="swal2-textarea" placeholder="Motivo de la revocación..." style="margin:0; width:90%; height:80px;"></textarea></div>' +
+        '</div>',
+      
+      width: '650px',
+      padding: '1.5rem',
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Enviar Solicitud',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      
+      preConfirm: () => {
+        const nombre = document.getElementById('swal-input1').value;
+        const dni = document.getElementById('swal-input-dni').value;
+        const pedido = document.getElementById('swal-input2').value;
+        const email = document.getElementById('swal-input3').value;
+        const comentarios = document.getElementById('swal-input4').value;
+        
+        // --- VALIDACIONES ---
+        
+        // 1. Campos obligatorios
+        if (!nombre || !email || !dni) {
+          Swal.showValidationMessage('Por favor completa los campos obligatorios (*)');
+          return false;
+        }
+        
+        // 2. Validación de DNI (solo números)
+        const dniPattern = /^[0-9]+$/;
+        if (!dniPattern.test(dni)) {
+          Swal.showValidationMessage('El DNI debe contener solo números');
+          return false;
+        }
+        
+        // 3. Validación de Email
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+          Swal.showValidationMessage('Por favor ingresa un email válido');
+          return false;
+        }
+        
+        return { nombre, dni, pedido, email, comentarios, company };
+      }
+    });
+
+    if (formValues) {
+      try {
+        // --- ENVÍO AL BACKEND ---
+        const dataString = encodeURIComponent(JSON.stringify(formValues));
+        const response = await axios.post(`${API_URL}/api/page/regretData?data=${dataString}`);
+        
+        // La respuesta exitosa debe incluir el código de identificación
+        const codigoTramite = response.data.codigo || 'ERROR-GENERANDO-CODIGO';
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Solicitud enviada correctamente',
+          html: `Tu código de identificación de arrepentimiento es: <br><br><b>${codigoTramite}</b><br><br>Te contactaremos en menos de 24hs para coordinar la revocación.`,
+          width: '600px',
+        });
+        
+      } catch (error) {
+        console.error(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No pudimos procesar tu solicitud. Por favor intenta más tarde. Si el error persiste, podes comunicarte con nosotros a este numero 11-3369-0584 para obtener asistencia.',
+        });
+      }
+    }
+  };
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -182,6 +278,13 @@ export default function Footer () {
             <NavLink to={'/others/revendedores'} className="hover:text-white transition-colors duration-300 hover:translate-x-1 transform">
               Revendedores
             </NavLink>
+
+            <button 
+              onClick={handleArrepentimiento}
+              className="mt-4 bg-transparent border border-red-400 text-red-400 hover:bg-red-400 bg-red-100 hover:text-white py-2 px-4 rounded transition-all duration-300 text-sm font-bold uppercase tracking-wider"
+            >
+              Botón de Arrepentimiento
+            </button>
           </article>
         </div>
       </section>
