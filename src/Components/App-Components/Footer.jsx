@@ -1,6 +1,6 @@
 import { MdOutlineEmail } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
-import { FaInstagram, FaAngleUp } from 'react-icons/fa'
+import { FaInstagram, FaAngleUp, FaBook, FaShieldAlt } from 'react-icons/fa'
 import { useState } from 'react'
 import Swal from 'sweetalert2'
 import axios from 'axios'
@@ -9,96 +9,73 @@ const API_URL = import.meta.env.MODE === 'production' ? import.meta.env.VITE_API
 export default function Footer () {
   const [email, setEmail] = useState('')
 
-  const handleArrepentimiento = async () => {
-    const company = 'Real Color SRL'
-    const { value: formValues } = await Swal.fire({
-      title: '<strong>Botón de Arrepentimiento</strong>',
-      icon: 'info',
+  const handleFormulario = async (esQueja) => {
+    const titulo = esQueja ? 'Libro de quejas' : 'Botón de Arrepentimiento';
+    const subTitulo = esQueja
+      ? 'Por favor, completa tus datos para dejar tu sugerencia o queja.'
+      : 'De acuerdo a la Ley 24.240, tienes 10 días corridos para revocar tu compra/pedido.';
+
+    const { value: data } = await Swal.fire({
+      title: `<strong>${titulo}</strong>`,
+      icon: esQueja ? 'question' : 'info',
       html:
-        '<p style="font-size: 0.95rem; margin-bottom: 20px; color: #555; text-align: left;">' +
-        'De acuerdo a la Ley 24.240, tienes 10 días corridos para revocar tu compra/pedido desde la recepción del producto o celebración del contrato.' +
-        '</p>' +
-        '<div style="text-align: left; display: flex; flex-direction: column; gap: 10px;">' +
-          '<div><label style="font-weight:bold; display:block; margin-bottom:5px;">Nombre Completo *</label>' +
-          '<input id="swal-input1" class="swal2-input" placeholder="Juan Perez" style="margin:0; width:90%;"></div>' +
+        `<p style="font-size: 0.95rem; margin-bottom: 20px; color: #555; text-align: left;">${subTitulo}</p>` +
+        '<div style="text-align: left; display: flex; flex-direction: column; gap: 8px;">' +
+          // --- Labels más chicos (font-size: 0.85rem) ---
+          '<div><label style="font-weight:bold; font-size: 0.85rem; display:block; margin-bottom:2px;">Nombre Completo (*)</label>' +
+          '<input id="swal-input-name" class="swal2-input" style="margin:0; width:95%;" placeholder="Juan Pérez"></div>' +
+
+          '<div><label style="font-weight:bold; font-size: 0.85rem; display:block; margin-bottom:2px;">DNI (*)</label>' +
+          '<input id="swal-input-dni" class="swal2-input" style="margin:0; width:95%;" placeholder="55345678"></div>' +
+
+          '<div><label style="font-weight:bold; font-size: 0.85rem; display:block; margin-bottom:2px;">Email (*)</label>' +
+          '<input id="swal-input-email" class="swal2-input" style="margin:0; width:95%;" placeholder="juan@email.com"></div>' +
           
-          '<div><label style="font-weight:bold; display:block; margin-bottom:5px;">DNI *</label>' +
-          '<input id="swal-input-dni" class="swal2-input" placeholder="12345678" style="margin:0; width:90%;"></div>' +
+          '<div><label style="font-weight:bold; font-size: 0.85rem; display:block; margin-bottom:2px;">Teléfono</label>' +
+          '<input id="swal-input-phone" class="swal2-input" style="margin:0; width:95%;" placeholder="1112345678"></div>' +
           
-          '<div><label style="font-weight:bold; display:block; margin-bottom:5px;">Número de pedido (Opcional)</label>' +
-          '<input id="swal-input2" class="swal2-input" placeholder="ej: 1234" style="margin:0; width:90%;"></div>' +
+          // --- Campo de Orden condicional ---
+          (!esQueja ? 
+            '<div><label style="font-weight:bold; font-size: 0.85rem; display:block; margin-bottom:2px;">Número de pedido/factura (*)</label>' +
+            '<input id="swal-input-order" class="swal2-input" style="margin:0; width:95%;" placeholder="12345"></div>' 
+          : '') +
           
-          '<div><label style="font-weight:bold; display:block; margin-bottom:5px;">Email de contacto *</label>' +
-          '<input id="swal-input3" class="swal2-input" placeholder="juan@email.com" type="email" style="margin:0; width:90%;"></div>' +
-          
-          '<div><label style="font-weight:bold; display:block; margin-bottom:5px;">Comentarios (Opcional)</label>' +
-          '<textarea id="swal-input4" class="swal2-textarea" placeholder="Motivo de la revocación..." style="margin:0; width:90%; height:80px;"></textarea></div>' +
+          '<div><label style="font-weight:bold; font-size: 0.85rem; display:block; margin-bottom:2px;">' + (esQueja ? 'Queja/Sugerencia' : 'Motivo') + ' (*)</label>' +
+          '<textarea id="swal-input-reason" class="swal2-textarea" style="margin:0; width:95%;" placeholder="Detalle aquí..."></textarea></div>' +
         '</div>',
-      
-      width: '650px',
-      padding: '1.5rem',
       focusConfirm: false,
       showCancelButton: true,
-      confirmButtonText: 'Enviar Solicitud',
+      confirmButtonText: 'Enviar',
       cancelButtonText: 'Cancelar',
-      showLoaderOnConfirm: true,
-      
       preConfirm: () => {
-        const nombre = document.getElementById('swal-input1').value;
+        const nombre = document.getElementById('swal-input-name').value;
+        const email = document.getElementById('swal-input-email').value;
+        const telefono = document.getElementById('swal-input-phone').value;
+        const comentarios = document.getElementById('swal-input-reason').value;
         const dni = document.getElementById('swal-input-dni').value;
-        const pedido = document.getElementById('swal-input2').value;
-        const email = document.getElementById('swal-input3').value;
-        const comentarios = document.getElementById('swal-input4').value;
-        
-        // --- VALIDACIONES ---
-        
-        // 1. Campos obligatorios
-        if (!nombre || !email || !dni) {
-          Swal.showValidationMessage('Por favor completa los campos obligatorios (*)');
+        const orderInput = document.getElementById('swal-input-order');
+        const pedido = orderInput ? orderInput.value : '-'; // 'N/A' si es queja
+
+        // --- Validación Dinámica ---
+        if (!nombre || !email || !telefono || !comentarios || (!esQueja && !pedido)) {
+          Swal.showValidationMessage('Por favor completa todos los campos obligatorios');
           return false;
         }
-        
-        // 2. Validación de DNI (solo números)
-        const dniPattern = /^[0-9]+$/;
-        if (!dniPattern.test(dni)) {
-          Swal.showValidationMessage('El DNI debe contener solo números');
-          return false;
-        }
-        
-        // 3. Validación de Email
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-          Swal.showValidationMessage('Por favor ingresa un email válido');
-          return false;
-        }
-        
-        return { nombre, dni, pedido, email, comentarios, company };
+
+        return { nombre, email, telefono, pedido, comentarios, company: 'Real Color SRL', dni };
       }
     });
 
-    if (formValues) {
+    if (data) {
       try {
-        // --- ENVÍO AL BACKEND ---
-        const dataString = encodeURIComponent(JSON.stringify(formValues));
-        const response = await axios.post(`${API_URL}/api/page/regretData?data=${dataString}`);
-        
-        // La respuesta exitosa debe incluir el código de identificación
-        const codigoTramite = response.data.codigo || 'ERROR-GENERANDO-CODIGO';
-
-        Swal.fire({
-          icon: 'success',
-          title: 'Solicitud enviada correctamente',
-          html: `Tu código de identificación de arrepentimiento es: <br><br><b>${codigoTramite}</b><br><br>Te contactaremos en menos de 24hs para coordinar la revocación.`,
-          width: '600px',
+        await axios.post(`${API_URL}/api/page/regretData`, {
+          formData: { ...data },
+          esQueja: esQueja // true o false
         });
-        
+        Swal.fire('¡Enviado!', 'Tu solicitud ha sido enviada correctamente.', 'success');
       } catch (error) {
         console.error(error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'No pudimos procesar tu solicitud. Por favor intenta más tarde. Si el error persiste, podes comunicarte con nosotros a este numero 11-3369-0584 para obtener asistencia.',
-        });
+        Swal.fire('Error', 'Hubo un problema al enviar la solicitud.', 'error');
       }
     }
   };
@@ -200,7 +177,7 @@ export default function Footer () {
       </section>
 
       {/* Mid Footer */}
-      <section className="relative flex flex-col xl:flex-row items-center justify-center w-full box-border bg-color text-white gap-8 pb-8 px-4 md:px-6">
+      <section className="relative flex flex-col xl:flex-row flex-wrap items-center justify-center w-full box-border bg-color text-white gap-8 pb-8 px-4 md:px-6">
         <article className="flex w-full max-w-[500px] flex-col justify-center items-center">
           <img
             src="https://real-color.com.ar/banners-images/Assets/logo_blancoNew.svg"
@@ -229,7 +206,7 @@ export default function Footer () {
           </ul>
         </article>
 
-        <div className='flex flex-col md:flex-row xl:flex-row justify-center items-center lg:items-start gap-8 w-fit'>
+        <article className='flex flex-col md:flex-row xl:flex-row justify-center items-center lg:items-start gap-8 w-fit'>
           <article className="min-w-[200px] md:min-h-[170px] flex flex-col gap-y-2 text-page-gray-light text-center lg:text-left">
             <h1 className="font-bold text-white text-lg border-b pb-2">
               Categorías
@@ -278,15 +255,42 @@ export default function Footer () {
             <NavLink to={'/others/revendedores'} className="hover:text-white transition-colors duration-300 hover:translate-x-1 transform">
               Revendedores
             </NavLink>
-
-            <button 
-              onClick={handleArrepentimiento}
-              className="mt-4 bg-transparent border border-red-400 text-red-400 hover:bg-red-400 bg-red-100 hover:text-white py-2 px-4 rounded transition-all duration-300 text-sm font-bold uppercase tracking-wider"
-            >
-              Botón de Arrepentimiento
-            </button>
           </article>
-        </div>
+        </article>
+
+        <article className="p-6 border-b border-gray-200">
+          <div className="max-w-7xl mx-auto flex bg-blue-400/40 flex-col md:flex-row justify-between items-center gap-4 p-4 rounded-xl shadow-sm border">
+            <p className="font-bold text-gray-50 text-center md:text-left">¿Necesitas ayuda adicional?</p>
+            
+            <div className="flex flex-col sm:flex-row gap-3">
+              {/* Botón Quejas */}
+              <button 
+                onClick={() => handleFormulario(true)} // Llama unificada
+                className="flex items-center gap-2 bg-gray-800 hover:bg-gray-950 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200"
+              >
+                <FaBook /> Libro de quejas
+              </button>
+
+              {/* Botón Defensa al Consumidor */}
+              <a 
+                href="https://buenosaires.gob.ar/jefaturadegabinete/atencion-ciudadana-y-gestioncomunal/defensa-al-consumidor" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200"
+              >
+                <FaShieldAlt /> Defensa al Consumidor
+              </a>
+
+              {/* BOTÓN ARREPENTIMIENTO MEJORADO */}
+              <button 
+                onClick={() => handleFormulario(false)} // Llama unificada
+                className="flex items-center gap-2 bg-red-500 hover:bg-red-500/80 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200"
+              >
+                <FaShieldAlt /> Botón de Arrepentimiento
+              </button>
+            </div>
+          </div>
+        </article>
       </section>
 
       {/* Social icons/card icons/ button */}
