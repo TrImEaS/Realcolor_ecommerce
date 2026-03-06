@@ -6,7 +6,7 @@ export const AuthContext = createContext()
 export const useAuth = () => useContext(AuthContext)
 
 export const AuthProvider = ({ children }) => {
-  const [userIsLoged, setUserIsLoged] = useState(false)
+  const [userIsLoged, setUserIsLoged] = useState(!!localStorage.getItem('token') && !!localStorage.getItem('email'))
   const [userData, setUserData] = useState([])
   const [token, setToken] = useState(localStorage.getItem('token'))
   const [email, setEmail] = useState(localStorage.getItem('email'))
@@ -87,16 +87,7 @@ export const AuthProvider = ({ children }) => {
     } else {
       setUserIsLoged(false)
     }
-  }, [token])
-
-  useEffect(() => {
-    if (email) {
-      setUserIsLoged(true)
-      getUserData()
-    } else {
-      setUserIsLoged(false)
-    }
-  }, [email])
+  }, [token, email])
 
   return (
     <AuthContext.Provider value={{ userIsLoged, setUserIsLoged, userData, setUserData, getUserData, setToken, token, setEmail, email, postalCode, CPValues, calculateShipping}}>
